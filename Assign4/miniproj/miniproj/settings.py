@@ -74,13 +74,13 @@ WSGI_APPLICATION = 'miniproj.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {                           # ???changed config from sqlite3 to postgresql, need to change username, password and dbname
+DATABASES = {                           # ???changed config from sqlite3 to postgresql
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'yourdbname',
-        'USER': 'yourdbuser',
-        'PASSWORD': 'yourdbpassword',
-        'HOST': 'localhost',
+        'NAME': '21CS10026',
+        'USER': '21CS10026',
+        'PASSWORD': '21CS10026',
+        'HOST': '10.5.18.68',
         'PORT': '5432',
     }
 }

@@ -28,3 +28,10 @@ class Student(useracc):
     dept = models.CharField(max_length=100)
     YEAR_IN_COLLEGE_CHOICES = [1,2,3,4,5]
     year = models.IntegerField(choices=YEAR_IN_COLLEGE_CHOICES)
+    
+    class Meta:
+        verbose_name = 'Student'
+        verbose_name_plural = 'Students'
+        ordering = ['-roll_number']
+    REQUIRED_FIELDS = ['roll_number']
+    

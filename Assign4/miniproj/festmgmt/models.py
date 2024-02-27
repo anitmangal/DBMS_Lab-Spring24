@@ -15,13 +15,21 @@ class useracc(AbstractUser, PermissionsMixin): # ??? user is renamed to user acc
     gender = models.CharField(max_length=50)
     address = models.TextField()    
     username = models.CharField(max_length=300, unique=True)
+    
+    ROLES = [
+        ('admin', 'Admin'),
+        ('student', 'Student'),
+        ('participant', 'Participant'),
+        ('organizer', 'Organizer'),
+    ]
+    role = models.CharField("Role", max_length=40, choices=ROLES, default='participant', blank = False)
     class Meta:
         verbose_name = 'User'
         verbose_name_plural = 'Users'
         ordering = ['-date_joined']
     
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email', 'phone', 'dob', 'gender', 'address']
+    REQUIRED_FIELDS = ['name', 'email']
     
 class Student(useracc):
     roll_number = models.CharField(max_length=50,primary_key=True)

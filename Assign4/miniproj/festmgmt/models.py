@@ -12,8 +12,7 @@ class useracc(AbstractUser, PermissionsMixin): # ??? user is renamed to user acc
     email = models.EmailField(max_length=300, unique=True)
     phone = PhoneNumberField(unique=True)
     dob = models.DateField()
-    gender = models.CharField(max_length=50)
-    address = models.TextField()    
+    gender = models.CharField(max_length=50)    
     username = models.CharField(max_length=300, unique=True)
     
     ROLES = [

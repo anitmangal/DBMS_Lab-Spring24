@@ -18,10 +18,11 @@ def login_view(request):
 
 def register_view(request):
     if request.method == 'POST':
-        form = StudentCreationForm(request.POST)
+        print(request.POST)
+        form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('login.html')  # Redirect to login page after successful account creation
+            return redirect(login_view)  # Redirect to login page after successful account creation
     else:
         form = StudentCreationForm()
     return render(request, 'register.html', {'form': form})

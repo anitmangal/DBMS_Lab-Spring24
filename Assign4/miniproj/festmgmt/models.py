@@ -32,7 +32,7 @@ class useracc(AbstractUser, PermissionsMixin):
 class Student(useracc):
     roll_number = models.CharField(max_length=50,primary_key=True)
     dept = models.CharField(max_length=100)
-    YEAR_IN_COLLEGE_CHOICES = [1,2,3,4,5]
+    YEAR_IN_COLLEGE_CHOICES = [(1, 'first'), (2, 'second'), (3, 'third'), (4, 'fourth'), (5, 'fifth')]
     year = models.IntegerField(choices=YEAR_IN_COLLEGE_CHOICES)
     
     class Meta:

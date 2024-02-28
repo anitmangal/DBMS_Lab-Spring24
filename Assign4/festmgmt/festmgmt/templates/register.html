@@ -11,7 +11,7 @@
     <h1>UCF 2024 Registration</h1><br>
     <form method="post" onsubmit="return validate();">
         {% csrf_token %}
-        <input type="hiddem" id="isWhat" name="isWhat" value="participant"/>
+        <input type="hidden" id="isWhat" name="isWhat" value="participant"/>
 
         <label for="name">Name: </label>
         <input type="text" id="name" name="name"/><br>

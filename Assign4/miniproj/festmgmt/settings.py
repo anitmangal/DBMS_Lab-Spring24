@@ -28,7 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'festmgmt',  # ?A? added festmgmt app
+    'festmgmt.apps.FestmgmtConfig',  # ?A? added festmgmt app
 ]
 
 MIDDLEWARE = [

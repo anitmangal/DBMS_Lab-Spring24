@@ -1,5 +1,4 @@
 Django==4.1.7
 django-phonenumber-field==7.0.2
 reportlab==3.6.12
-psycopg2==2.9.3
 django-phonenumbers==1.0.1

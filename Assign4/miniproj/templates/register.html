@@ -1,12 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UCF 2024 Registration</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.4.0/moment.min.js"></script>
-    <script src="js/form-validate.js"></script>
+    <title>UCF 2024 Registration {%block title %} {% endblock %} </title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
     <h1>UCF 2024 Registration</h1><br>
@@ -40,4 +39,6 @@
         <button type="submit">Register</button>
     </form>
 </body>
+<script src="{% static 'js/form-validate.js' %}"></script>
+<script src="{% static 'js/moment.min.js' %}"></script>
 </html>

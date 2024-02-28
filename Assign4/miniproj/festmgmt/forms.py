@@ -1,4 +1,5 @@
 from django import forms
+from django.db import transaction
 from .models import useracc, Student
 
 class UserCreationForm(forms.ModelForm):
@@ -6,7 +7,7 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = useracc
-        fields = ['username', 'password', 'name', 'email', 'phone', 'dob', 'gender', 'address', 'role']
+        fields = ['username', 'password', 'name', 'email', 'phone', 'dob', 'gender', 'role']
 
 class StudentCreationForm(UserCreationForm):
     # Add additional fields if necessary, for example:
@@ -16,7 +17,7 @@ class StudentCreationForm(UserCreationForm):
     
     class Meta(UserCreationForm.Meta):
         model = useracc
-        fields = ['username', 'name', 'email', 'phone', 'dob', 'gender', 'address', 'roll_number', 'dept', 'year']
+        fields = ['username', 'name', 'email', 'phone', 'dob', 'gender', 'roll_number', 'dept', 'year']
 
     @transaction.atomic  # Ensures data integrity during the creation process
     def save(self, commit=True):

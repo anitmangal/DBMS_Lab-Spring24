@@ -9,19 +9,19 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('home')  # Redirect to home page after successful login
+            return redirect('events.html')  # Redirect to home page after successful login
         else:
             # Display error message
-            return render(request, './templates/login.html', {'error': 'Invalid username or password'})
+            return render(request, 'login.html', {'error': 'Invalid username or password'})
     else:
-        return render(request, './templates/login.html')
+        return render(request, 'login.html')
 
-def create_student_account_view(request):
+def register_view(request):
     if request.method == 'POST':
         form = StudentCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('login')  # Redirect to login page after successful account creation
+            return redirect('login.html')  # Redirect to login page after successful account creation
     else:
         form = StudentCreationForm()
-    return render(request, './templates/create_account.html', {'form': form})
+    return render(request, 'register.html', {'form': form})

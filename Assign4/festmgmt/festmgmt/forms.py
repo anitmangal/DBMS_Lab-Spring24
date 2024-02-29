@@ -1,6 +1,6 @@
 from django import forms
 from django.db import transaction
-from .models import useracc, Student
+from .models import useracc, Student, Organiser
 
 class UserCreationForm(forms.ModelForm):
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
@@ -31,5 +31,24 @@ class StudentCreationForm(UserCreationForm):
                 roll_number=self.cleaned_data['roll_number'],
                 dept=self.cleaned_data['dept'],
                 year=self.cleaned_data['year'],
+            )
+        return user
+
+class OrganiserCreationForm(UserCreationForm):
+    position_of_responsibility = forms.CharField(required=True)
+
+    class Meta(UserCreationForm.Meta):
+        model = useracc
+        fields = ['username', 'password', 'name', 'email', 'phone', 'role', 'position_of_responsibility']
+
+    @transaction.atomic
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.role = 'organizer'
+        if commit:
+            user.save()
+            Organiser.objects.create(
+                user=user,
+                position_of_responsibility=self.cleaned_data['position_of_responsibility'],
             )
         return user

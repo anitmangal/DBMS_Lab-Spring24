@@ -9,32 +9,67 @@
 </head>
 <body>
     <h1>UCF 2024 Registration</h1><br>
-    <form action="login.html" onsubmit="return validate();">
+    <form method="post" onsubmit="return validate();">
+        {% csrf_token %}
+        <input type="hidden" id="isWhat" name="isWhat" value="participant"/>
+
         <label for="name">Name: </label>
-        <input type="text" id="name"/><br>
+        <input type="text" id="name" name="name"/><br>
 
         <label for="email">Email: </label>
-        <input type="text" id="email" /><br>
+        <input type="text" id="email" name="email" /><br>
 
         <label for = "phone">Phone Number: </label>
-        <input type="text" id="phone" /><br>
+        <input type="text" id="phone" name="phone"/><br>
 
         <label for="dob">Date of Birth: </label>
-        <input type="date" id="dob" /><br>
+        <input type="date" id="dob" name="dob"/><br>
 
         <label>Gender: </label>
         <input type="radio" id="male" name="gender" value="Male"/><span>Male</span>
         <input type="radio" id="female" name="gender" value="Female"/><span>Female</span>
         <input type="radio" id="other" name="gender" value="Other"/><span>Other</span><br>
 
+        <label for="collegeName">College Name: </label>
+        <input type="text" id="collegeName" name="collegeName"/><br>
+
+        <label for="collegeLocation">College Location: </label>
+        <input type="text" id="collegeLocation" name="collegeLocation" placeholder="City, State"/><br>
+
         <label for="username">Username: </label>
-        <input type="text" id="username" /><br>
+        <input type="text" id="username" name="username"/><br>
 
         <label for="password">Password: </label>
-        <input type="password" id="password" /><br>
+        <input type="password" id="password" name="password" /><br>
 
         <label for="cnfrmpass">Confirm Password: </label>
-        <input type="password" id="cnfrmpass" /><br>
+        <input type="password" id="cnfrmpass"/><br>
+
+        <label for="isStudent">Are you a student at UCF? </label>
+        <input type="checkbox" id="isStudent" onclick="showDiv()"/><br>
+
+        <div id="studentPart" class="studentDiv">
+            <label for="rollno">Roll Number: </label>
+            <input type="text" id="rollno" name="rollno"/><br>
+            <label for="dept">Department: </label>
+            <input type="text" id="dept" name="dept"/><br>
+            <label for="yearofstudy">Year of Study: </label>
+            <select id="yearofstudy">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </div>
+
+        <label for="isOrganiser">Are you an organiser at UCF? </label>
+        <input type="checkbox" id="isOrganiser" onclick="showDiv()"/><br>
+
+        <div id="organiserPart" class="organiserDiv">
+            <label for="position">Position of Responsibility: </label>
+            <input type="text" id="por" name="por"/><br>
+        </div>
 
         <button type="submit">Register</button>
     </form>

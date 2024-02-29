@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UCF 2024 Registration {%block title %} {% endblock %} </title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/register_style.css' %}">
 </head>
 <body>
     <h1>UCF 2024 Registration</h1><br>
@@ -48,6 +48,9 @@
         <label for="isStudent">Are you a student at UCF? </label>
         <input type="checkbox" id="isStudent" onclick="showDiv()"/><br>
 
+        <label for="isOrganiser">Are you an organiser at UCF? </label>
+        <input type="checkbox" id="isOrganiser" onclick="showDiv()"/><br>
+
         <div id="studentPart" class="studentDiv">
             <label for="rollno">Roll Number: </label>
             <input type="text" id="rollno" name="rollno"/><br>
@@ -62,9 +65,6 @@
                 <option value="5">5</option>
             </select>
         </div>
-
-        <label for="isOrganiser">Are you an organiser at UCF? </label>
-        <input type="checkbox" id="isOrganiser" onclick="showDiv()"/><br>
 
         <div id="organiserPart" class="organiserDiv">
             <label for="position">Position of Responsibility: </label>

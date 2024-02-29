@@ -5,14 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UCF 2024 Login {% block title %} {% endblock %} </title>
+    <link rel="stylesheet" href="{% static 'css/login_style.css' %}">
 </head>
 <body>
-    <form>
-        <input type="text" placeholder="Username" />
-        <input type="password" placeholder="Password" />
+    <div class="overlay"></div>
+    <h1>WELCOME TO UCF 2024</h1>
+    <h2>Log In</h2>
+    <form method="POST" action="{% url 'login' %}">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username" />
+        <input type="password" name="password" placeholder="Password" />
         <button type="submit">Login</button>
     </form>
-    <p>Don't have an account? </p>
-    <a href="register.html">Sign Up Here!</a>
+    <p>Don't have an account? <a href="{% url 'register' %}">Sign Up Here!</a></p>
 </body>
 </html>

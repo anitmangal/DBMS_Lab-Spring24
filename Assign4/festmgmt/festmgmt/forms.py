@@ -1,6 +1,7 @@
 from django import forms
 from django.db import transaction
 from .models import useracc, Student, Organiser, Participant
+import random
 
 class UserCreationForm(forms.ModelForm):
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
@@ -8,6 +9,39 @@ class UserCreationForm(forms.ModelForm):
     class Meta:
         model = useracc
         fields = ['username', 'password', 'name', 'email', 'phone', 'dob', 'gender', 'collegeName', 'collegeLocation', 'role']
+
+   
+class ParticipantCreationForm(UserCreationForm):
+    is_external = forms.BooleanField(required=False)
+    food = forms.CharField(required=False)
+    accomodation_building = forms.CharField(required=False)
+    accomodation_room = forms.CharField(required=False)
+    
+    class Meta(UserCreationForm.Meta):
+        model = Participant
+        fields = ['username', 'password', 'name', 'email', 'phone', 'dob', 'gender', 'collegeName', 'collegeLocation', 'is_external', 'food', 'accomodation_building', 'accomodation_room']
+    
+
+    @transaction.atomic  # Ensures data integrity during the creation process
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.role = 'participant'  # Assuming you have a role field to distinguish users
+        if commit:
+            user.save()
+            hallList = ['LBS', 'VS', 'LLR', 'Nehru', 'Patel', 'Azad']
+            if self.cleaned_data['role']=='participant':
+                is_ex = "True"
+            else:
+                is_ex = "False"
+            # Create Participant profile
+            Participant.objects.create(
+                user=user,
+                is_external=is_ex,
+                food=random.choice(hallList),
+                accomodation_building=random.choice(hallList),
+                accomodation_room=random.choice(hallList),
+            )
+        return user
 
 class StudentCreationForm(UserCreationForm):
     roll_number = forms.CharField(required=True)
@@ -50,31 +84,5 @@ class OrganiserCreationForm(UserCreationForm):
             Organiser.objects.create(
                 user=user,
                 position_of_responsibility=self.cleaned_data['position_of_responsibility'],
-            )
-        return user
-    
-class ParticipantCreationForm(UserCreationForm):
-    is_external = forms.BooleanField(required=False)
-    food = forms.CharField(required=True)
-    accomodation_building = forms.CharField(required=True)
-    accomodation_room = forms.CharField(required=True)
-    
-    class Meta(UserCreationForm.Meta):
-        model = Participant
-        fields = ['username', 'password', 'name', 'email', 'phone', 'dob', 'gender', 'collegeName', 'collegeLocation', 'is_external', 'food', 'accomodation_building', 'accomodation_room']
-    
-    @transaction.atomic  # Ensures data integrity during the creation process
-    def save(self, commit=True):
-        user = super().save(commit=False)
-        user.role = 'participant'  # Assuming you have a role field to distinguish users
-        if commit:
-            user.save()
-            # Create Participant profile
-            Participant.objects.create(
-                user=user,
-                is_external=self.cleaned_data['is_external'],
-                food=self.cleaned_data['food'],
-                accomodation_building=self.cleaned_data['accomodation_building'],
-                accomodation_room=self.cleaned_data['accomodation_room'],
             )
         return user

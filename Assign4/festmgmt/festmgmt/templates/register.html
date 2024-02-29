@@ -9,9 +9,14 @@
 </head>
 <body>
     <h1>UCF 2024 Registration</h1><br>
+    <div class="tab">
+    <button class="tablinks" onclick="openTab(event, 'Participant')">Participant</button>
+    <button class="tablinks" onclick="openTab(event, 'Student')">Student</button>
+    <button class="tablinks" onclick="openTab(event, 'Organiser')">Organiser</button>
+    </div>
+
     <form method="post" onsubmit="return validate();">
         {% csrf_token %}
-        {% comment %} {{form.as_p}}  {% endcomment %}
         <input type="hidden" id="isWhat" name="role" value="participant"/>
 
         <label for="name">Name: </label>
@@ -46,13 +51,7 @@
         <label for="cnfrmpass">Confirm Password: </label>
         <input type="password" id="cnfrmpass"/><br>
 
-        <label for="isStudent">Are you a student at UCF? </label>
-        <input type="checkbox" id="isStudent" onclick="showDiv()"/><br>
-
-        <label for="isOrganiser">Are you an organiser at UCF? </label>
-        <input type="checkbox" id="isOrganiser" onclick="showDiv()"/><br>
-
-        <div id="studentPart" class="studentDiv">
+        <div id="Student">
             <label for="rollno">Roll Number: </label>
             <input type="text" id="rollno" name="roll_number"/><br>
             <label for="dept">Department: </label>
@@ -67,13 +66,14 @@
             </select>
         </div>
 
-        <div id="organiserPart" class="organiserDiv">
+        <div id="Organiser">
             <label for="position">Position of Responsibility: </label>
             <input type="text" id="por" name="position_of_responsibility"/><br>
         </div>
 
         <button type="submit">Register</button>
     </form>
+
 </body>
 <script src="{% static 'js/form-validate.js' %}"></script>
 <script src="{% static 'js/moment.min.js' %}"></script>

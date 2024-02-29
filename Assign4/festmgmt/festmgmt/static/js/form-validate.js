@@ -1,27 +1,4 @@
-showDiv();
-
-function showDiv() {
-    var stud = document.getElementById('isStudent');
-    var org = document.getElementById('isOrganiser');
-    var isWhat = document.getElementById('isWhat');
-
-    if (org.checked) {
-        document.getElementById('studentPart').style.display = "block";
-        document.getElementById('organiserPart').style.display = "block";
-        stud.checked = true;
-        isWhat.value = "organiser";
-    }
-    else if (stud.checked) {
-        document.getElementById('organiserPart').style.display = "none";
-        document.getElementById('studentPart').style.display = "block";
-        isWhat.value = "student";
-    }
-    else {
-        document.getElementById('studentPart').style.display = "none";
-        document.getElementById('organiserPart').style.display = "none";
-        isWhat.value = "participant";
-    }
-}
+openTab(event, 'Participant');
 
 function validate() {
     var name = document.getElementById('name').value;
@@ -202,4 +179,23 @@ function validatePOR(org, por) {
         }
     }
     return true;
+}
+
+function openTab(evt, tabName) {
+    isWhat = document.getElementById('isWhat');
+    if (tabName == 'Organiser') {
+        isWhat.value = "organiser";
+        document.getElementById('Student').style.display = "block";
+        document.getElementById('Organiser').style.display = "block";
+    }
+    else if (tabName == 'Student') {
+        isWhat.value = "student";
+        document.getElementById('Student').style.display = "block";
+        document.getElementById('Organiser').style.display = "none";
+    }
+    else {
+        isWhat.value = "participant";
+        document.getElementById('Student').style.display = "none";
+        document.getElementById('Organiser').style.display = "none";
+    }
 }

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
-from .forms import UserCreationForm, StudentCreationForm, OrganiserCreationForm
+from .forms import UserCreationForm, StudentCreationForm, OrganiserCreationForm, ParticipantCreationForm
 
 def login_view(request):
     if request.method == 'POST':
@@ -18,30 +18,22 @@ def login_view(request):
 
 def register_view(request):
     if request.method == 'POST':
-        print(request.POST)
         role = request.POST.get('role', 'student')  # Get the role from POST data, default to 'student'
         if role == 'student':
             form = StudentCreationForm(request.POST)
-        elif role == 'organizer':
+        elif role == 'organiser':
             form = OrganiserCreationForm(request.POST)
         else:
-            print("PARTICIPANT")
-            form = UserCreationForm(request.POST)  # Default form
+            form = ParticipantCreationForm(request.POST)  # Default form
 
         if form.is_valid():
-            print("VALID")
-            print(form.cleaned_data['username'])
             user = form.save(commit=False)
             user.set_password(form.cleaned_data['password'])  # Set the password
             user.save()
             return redirect('login')  # Redirect to login page after successful account creation
         else:
-            print("INVALID")
             print(form.errors)
-    else:
-        form = UserCreationForm()  # Default form for GET request
-
-    return render(request, 'register.html', {'form': form})
+    return render(request, 'register.html')
 
 def events_view(request):
     return render(request, 'events.html')

@@ -5,21 +5,16 @@ function showDiv() {
     var org = document.getElementById('isOrganiser');
     var isWhat = document.getElementById('isWhat');
 
-    if (stud.checked && org.checked) {
-        stud.checked = false;
-        org.checked = false;
-        isWhat.value = "participant";
-    }
-
-    if (stud.checked) {
+    if (org.checked) {
         document.getElementById('studentPart').style.display = "block";
-        document.getElementById('organiserPart').style.display = "none";
-        isWhat.value = "student";
-    }
-    else if (org.checked) {
         document.getElementById('organiserPart').style.display = "block";
-        document.getElementById('studentPart').style.display = "none";
+        stud.checked = true;
         isWhat.value = "organiser";
+    }
+    else if (stud.checked) {
+        document.getElementById('organiserPart').style.display = "none";
+        document.getElementById('studentPart').style.display = "block";
+        isWhat.value = "student";
     }
     else {
         document.getElementById('studentPart').style.display = "none";

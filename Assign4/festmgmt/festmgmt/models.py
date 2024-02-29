@@ -10,6 +10,8 @@ class useracc(AbstractUser, PermissionsMixin):
     dob = models.DateField(null=True, blank=True)  # Allow null values here
     gender = models.CharField(max_length=50, null=True, blank=True)  # Allow null values here
     username = models.CharField(max_length=300, unique=True)
+    collegeName = models.CharField(max_length=300)
+    collegeLocation = models.CharField(max_length=300)
     
     ROLES = [
         ('admin', 'Admin'),
@@ -52,7 +54,7 @@ class Organiser(useracc):
 class Participant(useracc):
     participant_id = models.AutoField(primary_key=True)
     is_external = models.BooleanField(default=False)
-    # ????food
+    food = models.CharField(max_length=100)
     accomodation_building = models.CharField(max_length=100)
     accomodation_room = models.CharField(max_length=100)
 
@@ -62,3 +64,11 @@ class Participant(useracc):
         ordering = ['-participant_id']
     REQUIRED_FIELDS = ['participant_id']
 
+class Admin(useracc):
+    admin_id = models.AutoField(primary_key=True)
+
+    class Meta:
+        verbose_name = 'Admin'
+        verbose_name_plural = 'Admins'
+        ordering = ['-admin_id']
+    REQUIRED_FIELDS = ['admin_id']

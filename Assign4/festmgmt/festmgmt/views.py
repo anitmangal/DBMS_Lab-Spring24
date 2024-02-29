@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from .forms import UserCreationForm, StudentCreationForm, OrganiserCreationForm, ParticipantCreationForm
+from .models import Event, TimeSlot, Venue
 
 def login_view(request):
     if request.method == 'POST':
@@ -9,6 +11,8 @@ def login_view(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
+            if user.role == 'student':
+                return redirect('student_login')
             return redirect('events')  # Redirect to home page after successful login
         else:
             # Display error message
@@ -34,6 +38,16 @@ def register_view(request):
         else:
             print(form.errors)
     return render(request, 'register.html')
+
+@login_required(login_url = "student_login")
+def student_login_view(request):
+    # Retrieve all events from the database
+    events = Event.objects.all()
+    timeslots = TimeSlot.objects.all()
+    venues = Venue.objects.all()
+    return render(request, 'student_login.html', {'events': events, 'timeslots': timeslots, 'venues': venues})
+
+# ???? need to add logout
 
 def events_view(request):
     return render(request, 'events.html')

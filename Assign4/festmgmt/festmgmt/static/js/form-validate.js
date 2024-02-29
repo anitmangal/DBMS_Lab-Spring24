@@ -48,7 +48,7 @@ function validateEmail(email) {
 }
 
 function validatePhone(phone) {
-    var phoneRegex = /^\+[0-9]{11}$/;
+    var phoneRegex = /^\+[0-9]{12}$/;
     if (phoneRegex.test(phone)) {
         return true;
     } else {

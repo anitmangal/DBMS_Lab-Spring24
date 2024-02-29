@@ -73,3 +73,43 @@ class Admin(useracc):
         verbose_name_plural = 'Admins'
         ordering = ['-admin_id']
     REQUIRED_FIELDS = ['admin_id']
+    
+class TimeSlot(models.Model):
+    time_slot_id = models.AutoField(primary_key=True)
+    date = models.DateField()
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField(null=True, blank=True) # Allow null values here ????  check other places too
+    class Meta:
+        verbose_name = 'TimeSlot'
+        verbose_name_plural = 'TimeSlots'
+        ordering = ['-time_slot_id']
+    REQUIRED_FIELDS = ['time_slot_id', 'date', 'start_time']
+
+class Venue(models.Model):
+    venue_name = models.CharField(max_length=300, primary_key=True)
+    building = models.CharField(max_length=300)
+    audio_visual = models.BooleanField(default=False) # ???? kept it as boolean field
+    computer_terminals = models.BooleanField(default=False) # ???? kept it as boolean field
+    capacity = models.IntegerField() # added capacity field
+    class Meta:
+        verbose_name = 'Venue'
+        verbose_name_plural = 'Venues'
+        ordering = ['-venue_name']
+    REQUIRED_FIELDS = ['venue_name', 'building', 'audio_visual', 'computer_terminals', 'capacity']
+class Event(models.Model):
+    event_id = models.AutoField(primary_key=True)
+    event_name = models.CharField(max_length=300)
+    event_type = models.CharField(max_length=300)
+    event_description = models.TextField()
+    
+    time_slot_id = models.IntegerField(default=0)
+        
+    venue_name = models.CharField(max_length=300)
+    class Meta:
+        verbose_name = 'Event'
+        verbose_name_plural = 'Events'
+        ordering = ['-event_id']
+    
+    time_slot_id = models.ForeignKey(TimeSlot, on_delete=models.CASCADE)
+    venue_name = models.ForeignKey(Venue, on_delete=models.CASCADE)
+    REQUIRED_FIELDS = ['event_id', 'event_name', 'time_slot_id', 'venue_name']

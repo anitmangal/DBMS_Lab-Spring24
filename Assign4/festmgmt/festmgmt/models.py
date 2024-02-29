@@ -2,15 +2,13 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, PermissionsMixin
 from phonenumber_field.modelfields import PhoneNumberField
 
-# Add your models here
-
 class useracc(AbstractUser, PermissionsMixin):
     user_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=300)
     email = models.EmailField(max_length=300, unique=True)
     phone = PhoneNumberField(unique=True)
-    dob = models.DateField()
-    gender = models.CharField(max_length=50)    
+    dob = models.DateField(null=True, blank=True)  # Allow null values here
+    gender = models.CharField(max_length=50, null=True, blank=True)  # Allow null values here
     username = models.CharField(max_length=300, unique=True)
     
     ROLES = [
@@ -32,7 +30,7 @@ class useracc(AbstractUser, PermissionsMixin):
 class Student(useracc):
     roll_number = models.CharField(max_length=50,primary_key=True)
     dept = models.CharField(max_length=100)
-    YEAR_IN_COLLEGE_CHOICES = [(1, 'first'), (2, 'second'), (3, 'third'), (4, 'fourth'), (5, 'fifth')]
+    YEAR_IN_COLLEGE_CHOICES = [(1, 'First Year'), (2, 'Second Year'), (3, 'Third Year'), (4, 'Fourth Year'), (5, 'Fifth Year')]
     year = models.IntegerField(choices=YEAR_IN_COLLEGE_CHOICES)
     
     class Meta:

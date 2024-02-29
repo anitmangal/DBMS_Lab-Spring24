@@ -11,6 +11,7 @@
     <h1>UCF 2024 Registration</h1><br>
     <form method="post" onsubmit="return validate();">
         {% csrf_token %}
+        {% comment %} {{form.as_p}}  {% endcomment %}
         <input type="hidden" id="isWhat" name="role" value="participant"/>
 
         <label for="name">Name: </label>

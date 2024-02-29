@@ -43,6 +43,7 @@ function validate() {
     var org = document.getElementById('isOrganiser');
     var por = document.getElementById('por').value;
     if (validateName(name) && validateEmail(email) && validatePhone(phone) && validateDOB(dob) && validateGender(mgen, fgen, ogen) && validateCollegeName(collegeName) && validateCollegeLocation(collegeLocation) && validateUsername(username) && validatePassword(password) && validateCnfrmPass(password, cnfrmpass) && validateRollNo(stud, rollNo) && validateDept(stud, dept) && validateYearOfStudy(stud, yearOfStudy) && validatePOR(org, por)) {
+        console.log('YOU BASED');
         return true;
     }
     return false;
@@ -70,7 +71,7 @@ function validateEmail(email) {
 }
 
 function validatePhone(phone) {
-    var phoneRegex = /^[0-9]{10}$/;
+    var phoneRegex = /^\+[0-9]{11}$/;
     if (phoneRegex.test(phone)) {
         return true;
     } else {

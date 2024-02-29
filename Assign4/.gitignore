@@ -17,5 +17,6 @@
 ehthumbs.db
 Thumbs.db
 
-__pycache__/*
+*.pyc
 venv/*
+*.sqlite3

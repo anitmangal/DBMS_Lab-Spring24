@@ -48,3 +48,17 @@ class Organiser(useracc):
         verbose_name_plural = 'Organisers'
         ordering = ['-organiser_id']
     REQUIRED_FIELDS = ['organiser_id']
+
+class Participant(useracc):
+    participant_id = models.AutoField(primary_key=True)
+    is_external = models.BooleanField(default=False)
+    # ????food
+    accomodation_building = models.CharField(max_length=100)
+    accomodation_room = models.CharField(max_length=100)
+
+    class Meta:
+        verbose_name = 'Participant'
+        verbose_name_plural = 'Participants'
+        ordering = ['-participant_id']
+    REQUIRED_FIELDS = ['participant_id']
+

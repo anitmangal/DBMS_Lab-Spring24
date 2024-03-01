@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth import logout
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib import admin
@@ -6,7 +7,7 @@ from django.shortcuts import get_object_or_404
 from .forms import UserCreationForm, StudentCreationForm, OrganiserCreationForm, ParticipantCreationForm
 from .models import Event, Volunteer, Student, Participant, Participates, useracc, TimeSlot, Venue
 from django.db import transaction
-
+from django.db.models import Q
 
 def login_view(request):
     if request.user.is_authenticated:
@@ -71,11 +72,14 @@ def student_login_view(request):
             for participated_event in participate:
                 if participated_event.participant_id.participant_id == curr_participant.participant_id:                
                     participated_for_events.append(participated_event.event_id.event_id)
-                    print(participated_event.event_id.event_id)
         except:
             pass    
     return render(request, 'student_login.html', {'events': events, 'volunteered_for_events': volunteered_for_events, 'participated_for_events': participated_for_events})
 # ???? need to add logout
+def logout_view(request):
+    logout(request)
+    # Redirect to a logged-out page or home page
+    return redirect('login')
 
 @login_required(login_url='student_login')
 @transaction.atomic
@@ -116,8 +120,25 @@ def organiser_login_view(request):
     events = Event.objects.all()
     timeslots = TimeSlot.objects.all()
     venues = Venue.objects.all()
-    # volunteers = Volunteer.objects.all()
-    return render(request, 'organiser_login.html', {'events': events, 'timeslots': timeslots, 'venues': venues})
+    message = ''
+
+    query = request.GET.get('search')
+    search_type = request.GET.get('search_type')
+    if query is not None:
+        if search_type == 'event_name':
+            events = events.filter(event_name__icontains=query)
+        elif search_type == 'event_type':
+            events = events.filter(event_type__icontains=query)
+        elif search_type == 'event_description':
+            events = events.filter(event_description__icontains=query)
+        elif search_type == 'venue_name':
+            events = events.filter(venue_name__venue_name__icontains=query)
+        elif search_type == 'volunteer_roll_number':
+            events = events.filter(volunteer__student__roll_number__icontains=query)
+        if not events.exists():
+            message = 'No such events!'
+
+    return render(request, 'organiser_login.html', {'events': events, 'timeslots': timeslots, 'venues': venues, 'message': message, 'query': query, 'search_type': search_type})
 
 def events_view(request):
     return render(request, 'events.html')

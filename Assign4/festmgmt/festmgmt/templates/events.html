@@ -7,6 +7,10 @@
 </head>
 <body>
     <div style="float: right; margin-right: 20px;">
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
         <p><strong>Your Accomodation Details:</strong></p>
         <p><strong>Food Preference:</strong> {{ user.participant.food }}</p>
         <p><strong>Accommodation Building:</strong> {{ user.participant.accomodation_building }}</p>

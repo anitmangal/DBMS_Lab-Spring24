@@ -13,5 +13,6 @@ urlpatterns = [
     path('login/organiser/', views.organiser_login_view, name='organiser_login'),
     path('admin/', admin.site.urls),
     path('admin/', admin.site.index, name='adminview')
+    path('logout/', views.logout_view, name='logout'),
     # Add more URL patterns as needed
 ]

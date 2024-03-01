@@ -48,7 +48,7 @@ function validateEmail(email) {
 }
 
 function validatePhone(phone) {
-    var phoneRegex = /^\+[0-9]{11}$/;
+    var phoneRegex = /^\+[0-9]{12}$/;
     if (phoneRegex.test(phone)) {
         return true;
     } else {
@@ -185,17 +185,26 @@ function openTab(evt, tabName) {
     isWhat = document.getElementById('isWhat');
     if (tabName == 'Organiser') {
         isWhat.value = "organiser";
-        document.getElementById('Student').style.display = "block";
+        document.getElementById('Student').style.display = "none";
         document.getElementById('Organiser').style.display = "block";
+        document.getElementById('orgButton').style.backgroundColor = "#0056b3";
+        document.getElementById('studButton').style.backgroundColor = "#007BFF";
+        document.getElementById('partButton').style.backgroundColor = "#007BFF";
     }
     else if (tabName == 'Student') {
         isWhat.value = "student";
         document.getElementById('Student').style.display = "block";
         document.getElementById('Organiser').style.display = "none";
+        document.getElementById('orgButton').style.backgroundColor = "#007BFF";
+        document.getElementById('studButton').style.backgroundColor = "#0056b3";
+        document.getElementById('partButton').style.backgroundColor = "#007BFF";
     }
     else {
         isWhat.value = "participant";
         document.getElementById('Student').style.display = "none";
         document.getElementById('Organiser').style.display = "none";
+        document.getElementById('orgButton').style.backgroundColor = "#007BFF";
+        document.getElementById('studButton').style.backgroundColor = "#007BFF";
+        document.getElementById('partButton').style.backgroundColor = "#0056b3";
     }
 }

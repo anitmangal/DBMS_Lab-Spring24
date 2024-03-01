@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+</head>
+<body>
+    <h1>Welcome, {{ user.username }}!</h1>
+
+    <h2>Upcoming Events</h2>
+        {% if events %}
+            <ul>
+                {% for event in events %}
+                <li>
+                    <h2>{{ event.event_name }}</h2>
+                    <strong>Type:</strong> {{ event.event_type }}<br>
+                    <strong>Description:</strong> {{ event.event_description }}<br>
+                    <strong>Time Slot:</strong> 
+                    {% if event.time_slot_id %}
+                        {{ event.time_slot_id.date }} <br>
+                    {% else %}
+                        None<br>
+                    {% endif %}
+                    <strong>Venue:</strong> 
+                    {% if event.venue_name %}
+                        {{ event.venue_name.venue_name }}<br>
+                    {% else %}
+                        None<br>
+                    {% endif %}
+                    <!-- Add buttons for volunteering, organizing, participating here -->
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No events available.</p>
+        {% endif %}
+        <button onclick="volunteer()">Volunteer</button>
+        <button onclick="organize()">Organize</button>
+        <button onclick="participate()">Participate</button>
+
+        <!-- JavaScript functions for button actions -->
+        <script>
+            function volunteer() {
+                // Handle volunteer action
+                // You can redirect to a volunteer page or perform other actions
+                alert("You clicked Volunteer!");
+            }
+
+            function organize() {
+                // Handle organize action
+                // You can redirect to an organize page or perform other actions
+                alert("You clicked Organize!");
+            }
+
+            function participate() {
+                // Handle participate action
+                // You can redirect to a participate page or perform other actions
+                alert("You clicked Participate!");
+            }
+        </script>
+    </ul>
+</body>
+</html>

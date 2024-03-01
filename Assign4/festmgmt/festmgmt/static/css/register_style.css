@@ -11,7 +11,7 @@ h1 {
     margin-top: 50px;
 }
 
-form {
+.formDiv{
     width: 80%;
     margin: 0 auto;
     background-color: #fff;
@@ -45,3 +45,18 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+
+/* Style the tab */
+.tab {
+    /* overflow: hidden; */
+    /* border: 1px solid #ccc; */
+    background-color: #f1f1f1;
+  }
+  
+  /* Style the tab content */
+  .tabcontent {
+    /* display: none; */
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+  }

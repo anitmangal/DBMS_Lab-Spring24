@@ -10,7 +10,6 @@ class UserCreationForm(forms.ModelForm):
         model = useracc
         fields = ['username', 'password', 'name', 'email', 'phone', 'dob', 'gender', 'collegeName', 'collegeLocation', 'role']
 
-   
 class ParticipantCreationForm(UserCreationForm):
     is_external = forms.BooleanField(required=False)
     food = forms.CharField(required=False)

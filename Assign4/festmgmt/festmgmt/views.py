@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
 from .forms import UserCreationForm, StudentCreationForm, OrganiserCreationForm, ParticipantCreationForm
-from .models import Event, TimeSlot, Venue
+from .models import Event, Volunteer, Student, TimeSlot, Venue
 
 def login_view(request):
     if request.method == 'POST':
@@ -13,6 +14,8 @@ def login_view(request):
             login(request, user)
             if user.role == 'student':
                 return redirect('student_login')
+            elif user.role == 'organiser':
+                return redirect('organiser_login')
             return redirect('events')  # Redirect to home page after successful login
         else:
             # Display error message
@@ -39,15 +42,41 @@ def register_view(request):
             print(form.errors)
     return render(request, 'register.html')
 
-@login_required(login_url = "student_login")
+@login_required(login_url="student_login")
 def student_login_view(request):
-    # Retrieve all events from the database
+    events = Event.objects.all()
+    curr_username = request.user
+    # find the student object
+    student = Student.objects.get(username=curr_username)
+    volunteered_for_events = []
+    if student.is_authenticated:
+        volunteered_events = Volunteer.objects.filter(student=student)
+        for event in volunteered_events:
+            volunteered_for_events.append(event.event_id)
+        print(volunteered_for_events)
+    return render(request, 'student_login.html', {'events': events, 'volunteered_for_events': volunteered_for_events})
+# ???? need to add logout
+
+@login_required(login_url='student_login')
+def volunteer_event(request, event_id):
+    event = Event.objects.get(pk=event_id)
+    curr_username = request.user
+    #find the student object
+    student = Student.objects.get(username=curr_username)
+    if Volunteer.objects.filter(student=student, event=event).exists():
+        return redirect('student_login')  # Redirect to the student dashboard    
+    Volunteer.objects.create(student = student, event = event)
+    return redirect('student_login')
+
+
+@login_required(login_url="organiser_login")
+def organiser_login_view(request):
+    # Retrieve all events, timeslots, venues, and volunteers from the database
     events = Event.objects.all()
     timeslots = TimeSlot.objects.all()
     venues = Venue.objects.all()
-    return render(request, 'student_login.html', {'events': events, 'timeslots': timeslots, 'venues': venues})
-
-# ???? need to add logout
+    # volunteers = Volunteer.objects.all()
+    return render(request, 'organiser_login.html', {'events': events, 'timeslots': timeslots, 'venues': venues})
 
 def events_view(request):
     return render(request, 'events.html')

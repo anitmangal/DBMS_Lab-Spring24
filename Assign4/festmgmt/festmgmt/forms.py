@@ -28,21 +28,16 @@ class ParticipantCreationForm(UserCreationForm):
         user.role = 'participant'  # Assuming you have a role field to distinguish users
         if commit:
             user.save()
-            hallList = ['LBS', 'VS', 'LLR', 'Nehru', 'Patel', 'Azad', 'SBP', 'MS', 'MMM', 'SNIG', 'SNVH', 'MT', 'RP', 'RK']
-            roomList = ['101', '102', '103', '104', '105', '106', '107', '108', '109', '110', '201', '202', '203', '204', '205', '206', '207', '208', '209', '210', '301', '302', '303', '304', '305', '306', '307', '308', '309', '310']
             if self.cleaned_data['role']=='participant':
                 is_ex = "True"
             else:
                 is_ex = "False"
             # Create Participant profile
-            participant=Participant.objects.create(
+            Participant.objects.create(
                 user=user,
                 is_external=is_ex,
                 food=self.cleaned_data['food'],
-                accomodation_building=random.choice(hallList),
-                accomodation_room=random.choice(roomList),
             )
-            participant.save()
         return user
 
 class StudentCreationForm(UserCreationForm):
@@ -67,6 +62,8 @@ class StudentCreationForm(UserCreationForm):
                 dept=self.cleaned_data['dept'],
                 year=self.cleaned_data['year'],
             )
+        else:
+            print("Error")    
         return user
 
 class OrganiserCreationForm(UserCreationForm):

@@ -8,6 +8,10 @@ from .forms import UserCreationForm, ParticipantCreationForm, StudentCreationFor
 from .models import useracc, Student, Organiser, Participant
     
 class CustomUserAdmin(UserAdmin):
+    def save_model(self, request, obj, form, change):
+        if not obj.pk:
+            obj.set_password(obj.password)
+        super().save_model(request, obj, form, change)
     model = useracc
     add_form = UserCreationForm
     list_display = ['user_id', 'username', 'name', 'email', 'phone']

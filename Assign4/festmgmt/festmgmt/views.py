@@ -1,17 +1,25 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib import admin
 from django.shortcuts import get_object_or_404
 from .forms import UserCreationForm, StudentCreationForm, OrganiserCreationForm, ParticipantCreationForm
 from .models import Event, Volunteer, Student, TimeSlot, Venue
 
 def login_view(request):
+    if request.user.is_authenticated:
+        if request.user.is_superuser:
+            return redirect('adminview')
+        return redirect('events')
+    
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
+            if user.is_superuser:
+                return redirect('adminview')
             if user.role == 'student':
                 return redirect('student_login')
             elif user.role == 'organiser':

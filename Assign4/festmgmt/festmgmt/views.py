@@ -126,15 +126,18 @@ def participate_student_event(request, event_id):
 
     if Participates.objects.filter(participant_id = user_acc.user_id, event_id = event.event_id).exists():
         return redirect('student_login')
-    participant = Participant(user_id=user_acc.user_id)
-    participant.__dict__.update(user_acc.__dict__)
-    participant.save()
+
+    if not Participant.objects.filter(user_id=user_acc.user_id).exists():
+        participant = Participant(user_id=user_acc.user_id)
+        participant.__dict__.update(user_acc.__dict__)
+        participant.save()
+    else:
+        participant = Participant.objects.get(user_id=user_acc.user_id)
     # Save the Participant object
-    Participates.objects.create(
+    participates=Participates.objects.create(
         participant_id=participant,
         event_id=event
     )
-    # Save the Participates object
     return redirect('student_login')
 
 @login_required(login_url='events')

@@ -20,3 +20,4 @@ Thumbs.db
 *.pyc
 venv/*
 *.sqlite3
+migrations/*

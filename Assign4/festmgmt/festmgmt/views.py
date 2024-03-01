@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import admin
 from django.shortcuts import get_object_or_404
 from .forms import UserCreationForm, StudentCreationForm, OrganiserCreationForm, ParticipantCreationForm
-from .models import Event, Volunteer, Student, Participant, Participates, useracc, TimeSlot, Venue
+from .models import Event, Volunteer, Student, Participant, Participates, useracc, TimeSlot, Venue, Event_Winner
 from django.db import transaction
 from django.db.models import Q
 
@@ -57,15 +57,19 @@ def register_view(request):
 def student_login_view(request):
     events = Event.objects.all()
     participate = Participates.objects.all()
+    event_winners = Event_Winner.objects.all()
     
     curr_username = request.user
     student = Student.objects.get(username=curr_username)
     volunteered_for_events = []
     participated_for_events = []
+    declared_winner_events = []
     if student.is_authenticated:
         volunteered_events = Volunteer.objects.filter(student=student)
         for event in volunteered_events:
             volunteered_for_events.append(event.event_id)
+        for event in event_winners:
+            declared_winner_events.append(event.event_id.event_id)
         # find the participant associated with the user_id of the student
         try:
             curr_participant = Participant.objects.get(user_id=student.user_id)
@@ -74,7 +78,7 @@ def student_login_view(request):
                     participated_for_events.append(participated_event.event_id.event_id)
         except:
             pass    
-    return render(request, 'student_login.html', {'events': events, 'volunteered_for_events': volunteered_for_events, 'participated_for_events': participated_for_events})
+    return render(request, 'student_login.html', {'events': events, 'volunteered_for_events': volunteered_for_events, 'participated_for_events': participated_for_events, 'event_winners': event_winners, 'declared_winner_events': declared_winner_events})
 # ???? need to add logout
 def logout_view(request):
     logout(request)

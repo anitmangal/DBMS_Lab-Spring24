@@ -9,71 +9,72 @@
 </head>
 <body>
     <h1>UCF 2024 Registration</h1><br>
-    <div class="tab">
-    <button class="tablinks" onclick="openTab(event, 'Participant')">Participant</button>
-    <button class="tablinks" onclick="openTab(event, 'Student')">Student</button>
-    <button class="tablinks" onclick="openTab(event, 'Organiser')">Organiser</button>
+    <div class = "formDiv">
+        <div class="tab">
+        <button class="tablinks" onclick="openTab(event, 'Participant')" id = "partButton">Participant</button>
+        <button class="tablinks" onclick="openTab(event, 'Student')" id = "studButton">Student</button>
+        <button class="tablinks" onclick="openTab(event, 'Organiser')" id = "orgButton">Organiser</button>
+        </div>
+
+        <form method="post" onsubmit="return validate();">
+            {% csrf_token %}
+            <input type="hidden" id="isWhat" name="role" value="participant"/>
+
+            <label for="name">Name: </label>
+            <input type="text" id="name" name="name"/><br>
+
+            <label for="email">Email: </label>
+            <input type="text" id="email" name="email" /><br>
+
+            <label for = "phone">Phone Number: </label>
+            <input type="text" id="phone" name="phone"/><br>
+
+            <label for="dob">Date of Birth: </label>
+            <input type="date" id="dob" name="dob"/><br>
+
+            <label>Gender: </label>
+            <input type="radio" id="male" name="gender" value="Male"/><span>Male</span>
+            <input type="radio" id="female" name="gender" value="Female"/><span>Female</span>
+            <input type="radio" id="other" name="gender" value="Other"/><span>Other</span><br>
+
+            <label for="collegeName">College Name: </label>
+            <input type="text" id="collegeName" name="collegeName"/><br>
+
+            <label for="collegeLocation">College Location: </label>
+            <input type="text" id="collegeLocation" name="collegeLocation" placeholder="City, State"/><br>
+
+            <label for="username">Username: </label>
+            <input type="text" id="username" name="username"/><br>
+
+            <label for="password">Password: </label>
+            <input type="password" id="password" name="password" /><br>
+
+            <label for="cnfrmpass">Confirm Password: </label>
+            <input type="password" id="cnfrmpass"/><br>
+
+            <div id="Student">
+                <label for="rollno">Roll Number: </label>
+                <input type="text" id="rollno" name="roll_number"/><br>
+                <label for="dept">Department: </label>
+                <input type="text" id="dept" name="dept"/><br>
+                <label for="yearofstudy">Year of Study: </label>
+                <select id="yearofstudy" name="year">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+
+            <div id="Organiser">
+                <label for="position">Position of Responsibility: </label>
+                <input type="text" id="por" name="position_of_responsibility"/><br>
+            </div>
+
+            <button type="submit">Register</button>
+        </form>
     </div>
-
-    <form method="post" onsubmit="return validate();">
-        {% csrf_token %}
-        <input type="hidden" id="isWhat" name="role" value="participant"/>
-
-        <label for="name">Name: </label>
-        <input type="text" id="name" name="name"/><br>
-
-        <label for="email">Email: </label>
-        <input type="text" id="email" name="email" /><br>
-
-        <label for = "phone">Phone Number: </label>
-        <input type="text" id="phone" name="phone"/><br>
-
-        <label for="dob">Date of Birth: </label>
-        <input type="date" id="dob" name="dob"/><br>
-
-        <label>Gender: </label>
-        <input type="radio" id="male" name="gender" value="Male"/><span>Male</span>
-        <input type="radio" id="female" name="gender" value="Female"/><span>Female</span>
-        <input type="radio" id="other" name="gender" value="Other"/><span>Other</span><br>
-
-        <label for="collegeName">College Name: </label>
-        <input type="text" id="collegeName" name="collegeName"/><br>
-
-        <label for="collegeLocation">College Location: </label>
-        <input type="text" id="collegeLocation" name="collegeLocation" placeholder="City, State"/><br>
-
-        <label for="username">Username: </label>
-        <input type="text" id="username" name="username"/><br>
-
-        <label for="password">Password: </label>
-        <input type="password" id="password" name="password" /><br>
-
-        <label for="cnfrmpass">Confirm Password: </label>
-        <input type="password" id="cnfrmpass"/><br>
-
-        <div id="Student">
-            <label for="rollno">Roll Number: </label>
-            <input type="text" id="rollno" name="roll_number"/><br>
-            <label for="dept">Department: </label>
-            <input type="text" id="dept" name="dept"/><br>
-            <label for="yearofstudy">Year of Study: </label>
-            <select id="yearofstudy" name="year">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-            </select>
-        </div>
-
-        <div id="Organiser">
-            <label for="position">Position of Responsibility: </label>
-            <input type="text" id="por" name="position_of_responsibility"/><br>
-        </div>
-
-        <button type="submit">Register</button>
-    </form>
-
 </body>
 <script src="{% static 'js/form-validate.js' %}"></script>
 <script src="{% static 'js/moment.min.js' %}"></script>

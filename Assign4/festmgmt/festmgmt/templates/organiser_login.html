@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizer Dashboard</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+<body class="container">
+    <h1 class="my-4">Welcome, {{ user.username }}!</h1>
+
+    <h2 class="my-3">Events</h2>
+    {% if events %}
+        <div class="list-group">
+            {% for event in events %}
+                <div class="list-group-item">
+                    <h4 class="list-group-item-heading">{{ event.event_name }}</h4>
+                    <p class="mb-1"><strong>Type:</strong> {{ event.event_type }}</p>
+                    <p class="mb-1"><strong>Description:</strong> {{ event.event_description }}</p>
+                    <p class="mb-1"><strong>Time Slot:</strong> 
+                    {% if event.time_slot_id %}
+                        {{ event.time_slot_id.date }}
+                    {% else %}
+                        None
+                    {% endif %}
+                    </p>
+                    <p class="mb-1"><strong>Venue:</strong> 
+                    {% if event.venue_name %}
+                        {{ event.venue_name.venue_name }}
+                    {% else %}
+                        None
+                    {% endif %}
+                    </p>
+                    <p class="mb-1"><strong>Volunteers:</strong> 
+                    {% if event.volunteer_set.all %}
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Roll Number</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for volunteer in event.volunteer_set.all %}
+                                <tr>
+                                    <td>{{ volunteer.student.name }}</td>
+                                    <td>{{ volunteer.student.roll_number }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        No volunteers in this event yet!
+                    {% endif %}
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No events available.</p>
+    {% endif %}
+    <div class="my-3">
+        <button onclick="createEvent()" class="btn btn-primary">Create Event</button>
+    </div>
+
+    <!-- JavaScript functions for button actions -->
+    <script>
+        function createEvent() {
+            // Handle create event action
+            // You can redirect to a create event page or perform other actions
+            alert("You clicked Create Event!");
+        }
+    </script>
+</body>
+</html>

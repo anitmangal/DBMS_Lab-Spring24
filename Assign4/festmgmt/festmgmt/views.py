@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from .forms import UserCreationForm, StudentCreationForm, OrganiserCreationForm, ParticipantCreationForm
-from .models import Event, Volunteer, Student
+from .models import Event, Volunteer, Student, TimeSlot, Venue
 
 def login_view(request):
     if request.method == 'POST':
@@ -14,6 +14,8 @@ def login_view(request):
             login(request, user)
             if user.role == 'student':
                 return redirect('student_login')
+            elif user.role == 'organiser':
+                return redirect('organiser_login')
             return redirect('events')  # Redirect to home page after successful login
         else:
             # Display error message
@@ -61,10 +63,20 @@ def volunteer_event(request, event_id):
     curr_username = request.user
     #find the student object
     student = Student.objects.get(username=curr_username)
-    if Volunteer.objects.filter(student, event=event).exists():
+    if Volunteer.objects.filter(student=student, event=event).exists():
         return redirect('student_login')  # Redirect to the student dashboard    
     Volunteer.objects.create(student = student, event = event)
     return redirect('student_login')
+
+
+@login_required(login_url="organiser_login")
+def organiser_login_view(request):
+    # Retrieve all events, timeslots, venues, and volunteers from the database
+    events = Event.objects.all()
+    timeslots = TimeSlot.objects.all()
+    venues = Venue.objects.all()
+    # volunteers = Volunteer.objects.all()
+    return render(request, 'organiser_login.html', {'events': events, 'timeslots': timeslots, 'venues': venues})
 
 def events_view(request):
     return render(request, 'events.html')

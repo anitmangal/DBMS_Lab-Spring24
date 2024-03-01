@@ -14,6 +14,7 @@
                 {% for event in events %}
                 <li>
                     <h2>{{ event.event_name }}</h2>
+                    <!-- Other event details -->
                     <strong>Type:</strong> {{ event.event_type }}<br>
                     <strong>Description:</strong> {{ event.event_description }}<br>
                     <strong>Time Slot:</strong> 
@@ -29,36 +30,21 @@
                         None<br>
                     {% endif %}
                     <!-- Add buttons for volunteering, organizing, participating here -->
+                    {% if event.event_id not in volunteered_for_events %}
+                        <form action="{% url 'volunteer_event' event.event_id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit">Volunteer</button>
+                        </form>
+                    {% else %}
+                        <p>Volunteered</p>
+                    {% endif %}
+
                 </li>
                 {% endfor %}
             </ul>
         {% else %}
             <p>No events available.</p>
         {% endif %}
-        <button onclick="volunteer()">Volunteer</button>
-        <button onclick="organize()">Organize</button>
-        <button onclick="participate()">Participate</button>
-
-        <!-- JavaScript functions for button actions -->
-        <script>
-            function volunteer() {
-                // Handle volunteer action
-                // You can redirect to a volunteer page or perform other actions
-                alert("You clicked Volunteer!");
-            }
-
-            function organize() {
-                // Handle organize action
-                // You can redirect to an organize page or perform other actions
-                alert("You clicked Organize!");
-            }
-
-            function participate() {
-                // Handle participate action
-                // You can redirect to a participate page or perform other actions
-                alert("You clicked Participate!");
-            }
-        </script>
     </ul>
 </body>
 </html>

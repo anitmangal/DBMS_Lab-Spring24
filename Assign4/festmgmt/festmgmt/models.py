@@ -113,3 +113,12 @@ class Event(models.Model):
     time_slot_id = models.ForeignKey(TimeSlot, on_delete=models.CASCADE)
     venue_name = models.ForeignKey(Venue, on_delete=models.CASCADE)
     REQUIRED_FIELDS = ['event_id', 'event_name', 'time_slot_id', 'venue_name']
+    
+class Volunteer(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'Volunteer'
+        verbose_name_plural = 'Volunteers'
+        unique_together = ('student', 'event')

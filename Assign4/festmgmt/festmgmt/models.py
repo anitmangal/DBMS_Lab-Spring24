@@ -1,10 +1,14 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, PermissionsMixin
+from django.contrib.auth.models import AbstractUser, PermissionsMixin, UserManager
 from phonenumber_field.modelfields import PhoneNumberField
 import random
 
-
 class useracc(AbstractUser, PermissionsMixin):
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.set_password(self.password)
+        super(useracc, self).save(*args, **kwargs)
+
     user_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=300)
     email = models.EmailField(max_length=300, unique=True)

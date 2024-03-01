@@ -129,17 +129,15 @@ class Event(models.Model):
     event_name = models.CharField(max_length=300)
     event_type = models.CharField(max_length=300)
     event_description = models.TextField()
+
+    time_slot_id = models.ForeignKey(TimeSlot, on_delete=models.CASCADE)
+    venue_name = models.ForeignKey(Venue, on_delete=models.CASCADE)
     
-    time_slot_id = models.IntegerField(default=0)
-        
-    venue_name = models.CharField(max_length=300)
     class Meta:
         verbose_name = 'Event'
         verbose_name_plural = 'Events'
         ordering = ['-event_id']
     
-    time_slot_id = models.ForeignKey(TimeSlot, on_delete=models.CASCADE)
-    venue_name = models.ForeignKey(Venue, on_delete=models.CASCADE)
     REQUIRED_FIELDS = ['event_id', 'event_name', 'time_slot_id', 'venue_name']
     
 class Volunteer(models.Model):
@@ -150,3 +148,22 @@ class Volunteer(models.Model):
         verbose_name = 'Volunteer'
         verbose_name_plural = 'Volunteers'
         unique_together = ('student', 'event')
+
+class Event_Winner(models.Model):
+    event_id = models.ForeignKey(Event, on_delete=models.CASCADE)
+    participant_id = models.ForeignKey(Participant, on_delete=models.CASCADE)
+    position = models.IntegerField()
+    
+    class Meta:
+        verbose_name = 'Event_Winner'
+        verbose_name_plural = 'Event_Winners'
+        unique_together = ('event_id', 'participant_id')
+        
+class Participates(models.Model):
+    participant_id = models.ForeignKey(Participant, on_delete=models.CASCADE)
+    event_id = models.ForeignKey(Event, on_delete=models.CASCADE)
+    
+    class Meta:
+        verbose_name = 'Participates'
+        verbose_name_plural = 'Participate'
+        unique_together = ('participant_id', 'event_id')

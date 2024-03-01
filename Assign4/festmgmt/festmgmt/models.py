@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, PermissionsMixin
 from phonenumber_field.modelfields import PhoneNumberField
+import random
 
 
 class useracc(AbstractUser, PermissionsMixin):
@@ -58,6 +59,13 @@ class Participant(useracc):
     food = models.CharField(max_length=100)
     accomodation_building = models.CharField(max_length=100)
     accomodation_room = models.CharField(max_length=100)
+
+    def save(self, *args, **kwargs):
+        hallList = ['LBS', 'VS', 'LLR', 'Nehru', 'Patel', 'Azad', 'SBP', 'MS', 'MMM', 'SNIG', 'SNVH', 'MT', 'RP', 'RK']
+        roomList = ['101', '102', '103', '104', '105', '106', '107', '108', '109', '110', '201', '202', '203', '204', '205', '206', '207', '208', '209', '210', '301', '302', '303', '304', '305', '306', '307', '308', '309', '310']
+        self.accomodation_building = random.choice(hallList)
+        self.accomodation_room = random.choice(roomList)
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Participant'

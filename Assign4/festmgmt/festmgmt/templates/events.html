@@ -3,9 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UCF 2024</title>
+    <title>Participant Dashboard</title>
 </head>
 <body>
-    
+    <div style="float: right; margin-right: 20px;">
+        <p><strong>Your Accomodation Details:</strong></p>
+        <p><strong>Food Preference:</strong> {{ user.participant.food }}</p>
+        <p><strong>Accommodation Building:</strong> {{ user.participant.accomodation_building }}</p>
+        <p><strong>Accommodation Room:</strong> {{ user.participant.accomodation_room }}</p>
+    </div>
+
+    <h1>Welcome, {{ user.username }}!</h1>
+
+    <h2>Upcoming Events</h2>
+    {% if events %}
+        <ul>
+            {% for event in events %}
+            <li>
+                <h2>{{ event.event_name }}</h2>
+                <!-- Other event details -->
+                <strong>Type:</strong> {{ event.event_type }}<br>
+                <strong>Description:</strong> {{ event.event_description }}<br>
+                <strong>Time Slot:</strong> 
+                {% if event.time_slot_id %}
+                    {{ event.time_slot_id.date }} <br>
+                {% else %}
+                    None<br>
+                {% endif %}
+                <strong>Venue:</strong> 
+                {% if event.venue_name %}
+                    {{ event.venue_name.venue_name }}<br>
+                {% else %}
+                    None<br>
+                {% endif %}
+                <!-- Add buttons for volunteering, organizing, participating here -->
+                {% if event.event_id not in volunteered_for_events %}
+                    <form action="{% url 'volunteer_event' event.event_id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit">Volunteer</button>
+                    </form>
+                {% else %}
+                    <p>Volunteered</p>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No events available.</p>
+    {% endif %}
 </body>
 </html>

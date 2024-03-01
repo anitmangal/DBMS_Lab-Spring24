@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from .forms import UserCreationForm, StudentCreationForm, OrganiserCreationForm, ParticipantCreationForm
 from .models import Event, Volunteer, Student, TimeSlot, Venue
+from django.db.models import Q
 
 def login_view(request):
     if request.method == 'POST':
@@ -75,8 +76,25 @@ def organiser_login_view(request):
     events = Event.objects.all()
     timeslots = TimeSlot.objects.all()
     venues = Venue.objects.all()
-    # volunteers = Volunteer.objects.all()
-    return render(request, 'organiser_login.html', {'events': events, 'timeslots': timeslots, 'venues': venues})
+    message = ''
+
+    query = request.GET.get('search')
+    search_type = request.GET.get('search_type')
+    if query is not None:
+        if search_type == 'event_name':
+            events = events.filter(event_name__icontains=query)
+        elif search_type == 'event_type':
+            events = events.filter(event_type__icontains=query)
+        elif search_type == 'event_description':
+            events = events.filter(event_description__icontains=query)
+        elif search_type == 'venue_name':
+            events = events.filter(venue_name__venue_name__icontains=query)
+        elif search_type == 'volunteer_roll_number':
+            events = events.filter(volunteer__student__roll_number__icontains=query)
+        if not events.exists():
+            message = 'No such events!'
+
+    return render(request, 'organiser_login.html', {'events': events, 'timeslots': timeslots, 'venues': venues, 'message': message, 'query': query, 'search_type': search_type})
 
 def events_view(request):
     return render(request, 'events.html')

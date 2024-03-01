@@ -35,6 +35,7 @@ def register_view(request):
 
         if form.is_valid():
             user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password'])
             user.save()
             return redirect('login')  # Redirect to login page after successful account creation
         else:

@@ -10,6 +10,20 @@
 <body class="container">
     <h1 class="my-4">Welcome, {{ user.username }}!</h1>
 
+    <!-- Search form -->
+    <form method="GET" action="">
+        <label>Search for events by:</label>
+        <select name="search_type">
+            <option value="event_name" {% if search_type == 'event_name' %}selected{% endif %}>Event Name</option>
+            <option value="event_type" {% if search_type == 'event_type' %}selected{% endif %}>Event Type</option>
+            <option value="event_description" {% if search_type == 'event_description' %}selected{% endif %}>Event Description</option>
+            <option value="venue_name" {% if search_type == 'venue_name' %}selected{% endif %}>Venue Name</option>
+            <option value="volunteer_roll_number" {% if search_type == 'volunteer_roll_number' %}selected{% endif %}>Volunteer Roll Number</option>
+        </select>
+        <input type="text" name="search" placeholder="Enter search term">
+        <input type="submit" value="Search">
+    </form>
+
     <h2 class="my-3">Events</h2>
     {% if events %}
         <div class="list-group">
@@ -57,20 +71,22 @@
                 </div>
             {% endfor %}
         </div>
+    {% elif query %}
+        <p>{{ message }}</p>
     {% else %}
         <p>No events available.</p>
     {% endif %}
-    <div class="my-3">
+    <!-- <div class="my-3">
         <button onclick="createEvent()" class="btn btn-primary">Create Event</button>
-    </div>
+    </div> -->
 
     <!-- JavaScript functions for button actions -->
-    <script>
+    <!-- <script>
         function createEvent() {
             // Handle create event action
             // You can redirect to a create event page or perform other actions
             alert("You clicked Create Event!");
         }
-    </script>
+    </script> -->
 </body>
 </html>

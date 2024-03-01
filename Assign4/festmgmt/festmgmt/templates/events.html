@@ -3,9 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UCF 2024</title>
+    <title>Student Dashboard</title>
 </head>
 <body>
-    
+    <h1>Welcome, {{ user.username }}!</h1>
+
+    <h1>Welcome to Your Dashboard</h1>
+
+    {% if user.role == 'participant' %}
+        <h2>Participant Dashboard</h2>
+        <!-- Display events for participants -->
+        {% for event in participant_events %}
+            <div>
+                <h3>{{ event.name }}</h3>
+                <p>{{ event.description }}</p>
+                <form method="post" action="{% url 'register_for_event' event.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Register</button>
+                </form>
+            </div>
+        {% endfor %}
+
+    {% elif user.role == 'student' %}
+        <h2>Student Dashboard</h2>
+        <!-- Display events for students -->
+        {% for event in student_events %}
+            <div>
+                <h3>{{ event.name }}</h3>
+                <p>{{ event.description }}</p>
+                <form method="post" action="{% url 'register_for_event' event.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Register</button>
+                </form>
+                <form method="post" action="{% url 'volunteer_for_event' event.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Volunteer</button>
+                </form>
+            </div>
+        {% endfor %}
+
+    {% elif user.role == 'organiser' %}
+        <h2>Organiser Dashboard</h2>
+        <!-- Display events for organizers -->
+        {% for event in organiser_events %}
+            <div>
+                <h3>{{ event.name }}</h3>
+                <p>{{ event.description }}</p>
+                <!-- Display logistics and volunteers information for organizers -->
+                <p>Logistics: {{ event.logistics }}</p>
+                <p>Volunteers: {{ event.volunteers.all|length }}</p>
+            </div>
+        {% endfor %}
+
+    {% endif %}
 </body>
 </html>

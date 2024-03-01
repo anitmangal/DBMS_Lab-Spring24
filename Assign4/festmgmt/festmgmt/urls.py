@@ -1,4 +1,5 @@
 from django.urls import path
+from django.contrib import admin
 from . import views
 
 urlpatterns = [
@@ -8,5 +9,6 @@ urlpatterns = [
     path('volunteer/<int:event_id>/', views.volunteer_event, name='volunteer_event'),
     path('events/', views.events_view, name='events'),
     path('login/organiser/', views.organiser_login_view, name='organiser_login'),
+    path('admin/', admin.site.urls)
     # Add more URL patterns as needed
 ]

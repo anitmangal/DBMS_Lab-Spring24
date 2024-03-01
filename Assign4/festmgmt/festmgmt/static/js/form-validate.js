@@ -187,6 +187,7 @@ function openTab(evt, tabName) {
         isWhat.value = "organiser";
         document.getElementById('Student').style.display = "none";
         document.getElementById('Organiser').style.display = "block";
+        document.getElementById('Participant').style.display = "none";
         document.getElementById('orgButton').style.backgroundColor = "#0056b3";
         document.getElementById('studButton').style.backgroundColor = "#007BFF";
         document.getElementById('partButton').style.backgroundColor = "#007BFF";
@@ -195,6 +196,7 @@ function openTab(evt, tabName) {
         isWhat.value = "student";
         document.getElementById('Student').style.display = "block";
         document.getElementById('Organiser').style.display = "none";
+        document.getElementById('Participant').style.display = "none";
         document.getElementById('orgButton').style.backgroundColor = "#007BFF";
         document.getElementById('studButton').style.backgroundColor = "#0056b3";
         document.getElementById('partButton').style.backgroundColor = "#007BFF";
@@ -203,6 +205,7 @@ function openTab(evt, tabName) {
         isWhat.value = "participant";
         document.getElementById('Student').style.display = "none";
         document.getElementById('Organiser').style.display = "none";
+        document.getElementById('Participant').style.display = "block";
         document.getElementById('orgButton').style.backgroundColor = "#007BFF";
         document.getElementById('studButton').style.backgroundColor = "#007BFF";
         document.getElementById('partButton').style.backgroundColor = "#0056b3";

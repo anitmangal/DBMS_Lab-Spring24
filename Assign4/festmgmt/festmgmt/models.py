@@ -1,13 +1,19 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, PermissionsMixin
+from django.contrib.auth.models import AbstractUser, PermissionsMixin, UserManager
 from phonenumber_field.modelfields import PhoneNumberField
-
+import random
 
 class useracc(AbstractUser, PermissionsMixin):
+    # def save(self, *args, **kwargs):
+    #     if not self.pk:
+    #         self.set_password(self.password)
+    #         print(self.password)
+    #     super().save(*args, **kwargs)
+
     user_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=300)
     email = models.EmailField(max_length=300, unique=True)
-    phone = PhoneNumberField(unique=True)
+    phone = PhoneNumberField(unique=True, null=True, blank=True)  # Allow null values here
     dob = models.DateField(null=True, blank=True)  # Allow null values here
     gender = models.CharField(max_length=50, null=True, blank=True)  # Allow null values here
     username = models.CharField(max_length=300, unique=True)
@@ -31,6 +37,11 @@ class useracc(AbstractUser, PermissionsMixin):
     REQUIRED_FIELDS = ['name', 'email']
 
 class Student(useracc):
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.set_password(self.password)
+        super().save(*args, **kwargs)
+
     roll_number = models.CharField(max_length=50,primary_key=True)
     dept = models.CharField(max_length=100)
     YEAR_IN_COLLEGE_CHOICES = [(1, 'First Year'), (2, 'Second Year'), (3, 'Third Year'), (4, 'Fourth Year'), (5, 'Fifth Year')]
@@ -43,6 +54,11 @@ class Student(useracc):
     REQUIRED_FIELDS = ['roll_number']
 
 class Organiser(useracc):
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.set_password(self.password)
+        super().save(*args, **kwargs)
+
     organiser_id = models.AutoField(primary_key=True)
     position_of_responsibility = models.CharField(max_length=100)
     
@@ -53,11 +69,23 @@ class Organiser(useracc):
     REQUIRED_FIELDS = ['organiser_id']
 
 class Participant(useracc):
+    # def save(self, *args, **kwargs):
+    #     if not self.pk:
+    #         self.set_password(self.password)
+    #     super().save(*args, **kwargs)
+
     participant_id = models.AutoField(primary_key=True)
     is_external = models.BooleanField(default=False)
     food = models.CharField(max_length=100)
     accomodation_building = models.CharField(max_length=100)
     accomodation_room = models.CharField(max_length=100)
+
+    def save(self, *args, **kwargs):
+        hallList = ['LBS', 'VS', 'LLR', 'Nehru', 'Patel', 'Azad', 'SBP', 'MS', 'MMM', 'SNIG', 'SNVH', 'MT', 'RP', 'RK']
+        roomList = ['101', '102', '103', '104', '105', '106', '107', '108', '109', '110', '201', '202', '203', '204', '205', '206', '207', '208', '209', '210', '301', '302', '303', '304', '305', '306', '307', '308', '309', '310']
+        self.accomodation_building = random.choice(hallList)
+        self.accomodation_room = random.choice(roomList)
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Participant'

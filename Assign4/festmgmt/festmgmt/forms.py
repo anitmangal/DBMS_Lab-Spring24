@@ -27,7 +27,6 @@ class ParticipantCreationForm(UserCreationForm):
         user.role = 'participant'  # Assuming you have a role field to distinguish users
         if commit:
             user.save()
-            hallList = ['LBS', 'VS', 'LLR', 'Nehru', 'Patel', 'Azad']
             if self.cleaned_data['role']=='participant':
                 is_ex = "True"
             else:
@@ -36,9 +35,7 @@ class ParticipantCreationForm(UserCreationForm):
             Participant.objects.create(
                 user=user,
                 is_external=is_ex,
-                food=random.choice(hallList),
-                accomodation_building=random.choice(hallList),
-                accomodation_room=random.choice(hallList),
+                food=self.cleaned_data['food'],
             )
         return user
 
@@ -64,6 +61,8 @@ class StudentCreationForm(UserCreationForm):
                 dept=self.cleaned_data['dept'],
                 year=self.cleaned_data['year'],
             )
+        else:
+            print("Error")    
         return user
 
 class OrganiserCreationForm(UserCreationForm):

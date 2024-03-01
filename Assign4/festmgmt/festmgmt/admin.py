@@ -1,10 +1,12 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate
 # Register your models here.
 
 from .forms import UserCreationForm, ParticipantCreationForm, StudentCreationForm, OrganiserCreationForm
 from .models import useracc, Student, Organiser, Participant
-
+    
 class CustomUserAdmin(UserAdmin):
     model = useracc
     add_form = UserCreationForm
@@ -53,3 +55,5 @@ admin.site.register(useracc, CustomUserAdmin)
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Organiser, OrganiserAdmin)
 admin.site.register(Participant, ParticipantAdmin)
+
+admin.site.site_header = 'Fest Management System'

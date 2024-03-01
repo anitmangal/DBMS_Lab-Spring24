@@ -4,15 +4,16 @@ from phonenumber_field.modelfields import PhoneNumberField
 import random
 
 class useracc(AbstractUser, PermissionsMixin):
-    def save(self, *args, **kwargs):
-        if not self.pk:
-            self.set_password(self.password)
-        super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if not self.pk:
+    #         self.set_password(self.password)
+    #         print(self.password)
+    #     super().save(*args, **kwargs)
 
     user_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=300)
     email = models.EmailField(max_length=300, unique=True)
-    phone = PhoneNumberField(unique=True)
+    phone = PhoneNumberField(unique=True, null=True, blank=True)  # Allow null values here
     dob = models.DateField(null=True, blank=True)  # Allow null values here
     gender = models.CharField(max_length=50, null=True, blank=True)  # Allow null values here
     username = models.CharField(max_length=300, unique=True)
@@ -68,10 +69,10 @@ class Organiser(useracc):
     REQUIRED_FIELDS = ['organiser_id']
 
 class Participant(useracc):
-    def save(self, *args, **kwargs):
-        if not self.pk:
-            self.set_password(self.password)
-        super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if not self.pk:
+    #         self.set_password(self.password)
+    #     super().save(*args, **kwargs)
 
     participant_id = models.AutoField(primary_key=True)
     is_external = models.BooleanField(default=False)

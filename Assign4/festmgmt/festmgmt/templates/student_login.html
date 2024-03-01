@@ -15,6 +15,19 @@
     
     <h1>Welcome, {{ user.username }}!</h1>
 
+    <!-- Search form -->
+    <form method="GET" action="">
+        <label>Search for events by:</label>
+        <select name="search_type">
+            <option value="event_name" {% if search_type == 'event_name' %}selected{% endif %}>Event Name</option>
+            <option value="event_type" {% if search_type == 'event_type' %}selected{% endif %}>Event Type</option>
+            <option value="event_description" {% if search_type == 'event_description' %}selected{% endif %}>Event Description</option>
+            <option value="venue_name" {% if search_type == 'venue_name' %}selected{% endif %}>Venue Name</option>
+        </select>
+        <input type="text" name="search" placeholder="Enter search term">
+        <input type="submit" value="Search">
+    </form>
+
     <h2>Upcoming Events</h2>
         {% if events %}
             <ul>

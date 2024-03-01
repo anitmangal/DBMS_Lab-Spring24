@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Winner</title>
+    <link rel="stylesheet" href="{% static 'css/register_style.css' %}">
+</head>
+<body>
+    <h1>Add Winner</h1><br>
+    <div class="formDiv">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.participant_id.label_tag }} {{ form.participant_id }}<br>
+            {{ form.event_id.label_tag }} {{ form.event_id }}<br>
+            {{ form.position.label_tag }} {{ form.position }}<br>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

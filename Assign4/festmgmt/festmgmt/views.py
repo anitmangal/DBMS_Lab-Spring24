@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth import logout
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib import admin
@@ -64,7 +65,12 @@ def student_login_view(request):
             volunteered_for_events.append(event.event_id)
         print(volunteered_for_events)
     return render(request, 'student_login.html', {'events': events, 'volunteered_for_events': volunteered_for_events})
+
 # ???? need to add logout
+def logout_view(request):
+    logout(request)
+    # Redirect to a logged-out page or home page
+    return redirect('login')
 
 @login_required(login_url='student_login')
 def volunteer_event(request, event_id):

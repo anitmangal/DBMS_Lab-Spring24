@@ -129,17 +129,15 @@ class Event(models.Model):
     event_name = models.CharField(max_length=300)
     event_type = models.CharField(max_length=300)
     event_description = models.TextField()
+
+    time_slot_id = models.ForeignKey(TimeSlot, on_delete=models.CASCADE)
+    venue_name = models.ForeignKey(Venue, on_delete=models.CASCADE)
     
-    time_slot_id = models.IntegerField(default=0)
-        
-    venue_name = models.CharField(max_length=300)
     class Meta:
         verbose_name = 'Event'
         verbose_name_plural = 'Events'
         ordering = ['-event_id']
     
-    time_slot_id = models.ForeignKey(TimeSlot, on_delete=models.CASCADE)
-    venue_name = models.ForeignKey(Venue, on_delete=models.CASCADE)
     REQUIRED_FIELDS = ['event_id', 'event_name', 'time_slot_id', 'venue_name']
     
 class Volunteer(models.Model):

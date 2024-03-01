@@ -6,6 +6,13 @@
     <title>Student Dashboard</title>
 </head>
 <body>
+    <div style="float: right; margin-right: 20px;">
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+    
     <h1>Welcome, {{ user.username }}!</h1>
 
     <h2>Upcoming Events</h2>

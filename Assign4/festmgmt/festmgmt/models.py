@@ -4,11 +4,6 @@ from phonenumber_field.modelfields import PhoneNumberField
 import random
 
 class useracc(AbstractUser, PermissionsMixin):
-    # def save(self, *args, **kwargs):
-    #     if not self.pk:
-    #         self.set_password(self.password)
-    #         print(self.password)
-    #     super().save(*args, **kwargs)
 
     user_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=300)
@@ -37,10 +32,6 @@ class useracc(AbstractUser, PermissionsMixin):
     REQUIRED_FIELDS = ['name', 'email']
 
 class Student(useracc):
-    # def save(self, *args, **kwargs):
-    #     if not self.pk:
-    #         self.set_password(self.password)
-    #     super().save(*args, **kwargs)
 
     roll_number = models.CharField(max_length=50,primary_key=True)
     dept = models.CharField(max_length=100)
@@ -54,10 +45,6 @@ class Student(useracc):
     REQUIRED_FIELDS = ['roll_number']
 
 class Organiser(useracc):
-    # def save(self, *args, **kwargs):
-    #     if not self.pk:
-    #         self.set_password(self.password)
-    #     super().save(*args, **kwargs)
 
     organiser_id = models.AutoField(primary_key=True)
     position_of_responsibility = models.CharField(max_length=100)
@@ -69,10 +56,6 @@ class Organiser(useracc):
     REQUIRED_FIELDS = ['organiser_id']
 
 class Participant(useracc):
-    # def save(self, *args, **kwargs):
-    #     if not self.pk:
-    #         self.set_password(self.password)
-    #     super().save(*args, **kwargs)
 
     participant_id = models.AutoField(primary_key=True)
     is_external = models.BooleanField(default=False)

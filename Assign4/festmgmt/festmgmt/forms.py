@@ -1,7 +1,6 @@
 from django import forms
 from django.db import transaction
 from .models import useracc, Student, Organiser, Participant
-import random
 
 class UserCreationForm(forms.ModelForm):
     password = forms.CharField(label='Password', widget=forms.PasswordInput)

@@ -135,6 +135,36 @@ def student_participated_events_view(request):
 
     return render(request, 'student_participated_events.html', {'events': events, 'timeslots': timeslots, 'venues': venues, 'message': message, 'query': query, 'search_type': search_type, 'participated_for_events': participated_for_events})
 
+def student_volunteered_events_view(request):
+    events = Event.objects.all()
+    timeslots = TimeSlot.objects.all()
+    venues = Venue.objects.all()
+    message = ''
+    
+    curr_username = request.user
+    student = Student.objects.get(username=curr_username)
+    volunteered_for_events = []
+    if student.is_authenticated:
+        volunteer_objects= Volunteer.objects.filter(student=student)
+        for volunteer_object in volunteer_objects:
+            volunteered_for_events.append(volunteer_object.event)
+
+    query = request.GET.get('search')
+    search_type = request.GET.get('search_type')
+    if query is not None:
+        if search_type == 'event_name':
+            events = events.filter(event_name__icontains=query)
+        elif search_type == 'event_type':
+            events = events.filter(event_type__icontains=query)
+        elif search_type == 'event_description':
+            events = events.filter(event_description__icontains=query)
+        elif search_type == 'venue_name':
+            events = events.filter(venue_name__venue_name__icontains=query)
+        if not events.exists():
+            message = 'No such events!'
+
+    return render(request, 'student_volunteered_events.html', {'events': events, 'timeslots': timeslots, 'venues': venues, 'message': message, 'query': query, 'search_type': search_type, 'volunteered_for_events': volunteered_for_events})
+
 def logout_view(request):
     logout(request)
     # Redirect to a logged-out page or home page

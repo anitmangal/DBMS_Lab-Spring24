@@ -10,6 +10,7 @@ from django.db import transaction
 from django.db.models import Q
 from django.db.models import CASCADE
 from django.db.models import deletion
+from django.http import HttpResponseNotAllowed
 
 
 def login_view(request):
@@ -62,6 +63,8 @@ def register_view(request):
 
 @login_required(login_url="student_login")
 def student_login_view(request):
+    if request.user.role != 'student':
+        return HttpResponseNotAllowed('You are not allowed to access this page')
     events = Event.objects.all()
     timeslots = TimeSlot.objects.all()
     venues = Venue.objects.all()
@@ -106,6 +109,8 @@ def student_login_view(request):
     return render(request, 'student_login.html', {'events': events, 'timeslots': timeslots, 'venues': venues, 'message': message, 'query': query, 'search_type': search_type, 'volunteered_for_events': volunteered_for_events, 'participated_for_events': participated_for_events, 'event_winners': event_winners, 'declared_winner_events': declared_winner_events})
 
 def student_participated_events_view(request):
+    if request.user.role != 'student':
+        return HttpResponseNotAllowed('You are not allowed to access this page')
     events = Event.objects.all()
     timeslots = TimeSlot.objects.all()
     venues = Venue.objects.all()
@@ -117,7 +122,10 @@ def student_participated_events_view(request):
     participated_for_events = []
     if student.is_authenticated:
         # find the participant associated with the user_id of the student
-        curr_participant = Participant.objects.get(user_id=student.user_id)
+        try:
+            curr_participant = Participant.objects.get(user_id=student.user_id)
+        except:
+            curr_participant = None
         for participated_event in participate:
             if participated_event.participant_id.participant_id == curr_participant.participant_id:                
                 participated_for_events.append(participated_event.event_id)
@@ -139,6 +147,8 @@ def student_participated_events_view(request):
     return render(request, 'student_participated_events.html', {'events': events, 'timeslots': timeslots, 'venues': venues, 'message': message, 'query': query, 'search_type': search_type, 'participated_for_events': participated_for_events})
 
 def student_volunteered_events_view(request):
+    if request.user.role != 'student':
+        return HttpResponseNotAllowed('You are not allowed to access this page')
     events = Event.objects.all()
     timeslots = TimeSlot.objects.all()
     venues = Venue.objects.all()
@@ -176,6 +186,8 @@ def logout_view(request):
 @login_required(login_url='student_login')
 @transaction.atomic
 def volunteer_event(request, event_id):
+    if request.user.role != 'student':
+        return HttpResponseNotAllowed('You are not allowed to access this page')
     event = Event.objects.get(pk=event_id)
     curr_username = request.user
     #find the student object
@@ -188,6 +200,8 @@ def volunteer_event(request, event_id):
 @login_required(login_url='student_login')
 @transaction.atomic
 def participate_student_event(request, event_id):
+    if request.user.role != 'student':
+        return HttpResponseNotAllowed('You are not allowed to access this page')
     event = Event.objects.get(pk=event_id)
     curr_username = request.user
     user_acc = useracc.objects.get(username=curr_username)
@@ -212,6 +226,8 @@ def participate_student_event(request, event_id):
 @login_required(login_url='events')
 @transaction.atomic
 def participate_event(request, event_id):
+    if request.user.role != 'participant':
+        return HttpResponseNotAllowed('You are not allowed to access this page')
     event = Event.objects.get(pk=event_id)
     curr_username = request.user
     user_acc = useracc.objects.get(username=curr_username)
@@ -231,6 +247,8 @@ def participate_event(request, event_id):
 
 @login_required(login_url="organiser_login")
 def organiser_login_view(request):
+    if request.user.role != 'organiser':
+        return HttpResponseNotAllowed('You are not allowed to access this page')
     # Retrieve all events, timeslots, venues, and volunteers from the database
     events = Event.objects.all()
     timeslots = TimeSlot.objects.all()
@@ -257,6 +275,8 @@ def organiser_login_view(request):
 
 @login_required(login_url="organiser_login")
 def add_winner(request, event_id):
+    if request.user.role != 'organiser':
+        return HttpResponseNotAllowed('You are not allowed to access this page')
     event = get_object_or_404(Event, pk=event_id)
     if request.method == 'POST':
         form = AddWinnerForm(request.POST, event_id=event.event_id)
@@ -272,6 +292,8 @@ def add_winner(request, event_id):
 
 @login_required(login_url="events")
 def events_view(request):
+    if request.user.role != 'participant':
+        return HttpResponseNotAllowed('You are not allowed to access this page')
     events = Event.objects.all()
     timeslots = TimeSlot.objects.all()
     venues = Venue.objects.all()
@@ -305,6 +327,8 @@ def events_view(request):
 
 @login_required(login_url="events")
 def participated_events_view(request):
+    if request.user.role != 'participant':
+        return HttpResponseNotAllowed('You are not allowed to access this page')
     events = Event.objects.all()
     timeslots = TimeSlot.objects.all()
     venues = Venue.objects.all()
@@ -338,6 +362,8 @@ def participated_events_view(request):
 @login_required(login_url='student_login')
 @transaction.atomic
 def unparticipate_event(request, event_id):
+    if request.user.role != 'student':
+        return HttpResponseNotAllowed('You are not allowed to access this page')
     event = Event.objects.get(pk=event_id)
     curr_username = request.user
     user_acc = useracc.objects.get(username=curr_username)
@@ -362,6 +388,8 @@ def unparticipate_event(request, event_id):
 @login_required(login_url='student_login')
 @transaction.atomic
 def unvolunteer_student_event(request, event_id):
+    if request.user.role != 'student':
+        return HttpResponseNotAllowed('You are not allowed to access this page')
     event = Event.objects.get(pk=event_id)
     curr_username = request.user
     student = Student.objects.get(username=curr_username)

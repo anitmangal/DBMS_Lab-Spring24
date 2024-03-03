@@ -2,9 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.shortcuts import get_object_or_404
-from .forms import UserCreationForm, StudentCreationForm, OrganiserCreationForm, ParticipantCreationForm
+from .forms import UserCreationForm, StudentCreationForm, OrganiserCreationForm, ParticipantCreationForm, AddWinnerForm
 from .models import Event, Volunteer, Student, Participant, Participates, useracc, TimeSlot, Venue, Event_Winner
 from django.db import transaction
 from django.db.models import Q
@@ -251,6 +251,21 @@ def organiser_login_view(request):
             message = 'No such events!'
 
     return render(request, 'organiser_login.html', {'events': events, 'timeslots': timeslots, 'venues': venues, 'message': message, 'query': query, 'search_type': search_type})
+
+@login_required(login_url="organiser_login")
+def add_winner(request, event_id):
+    event = get_object_or_404(Event, pk=event_id)
+    if request.method == 'POST':
+        form = AddWinnerForm(request.POST, event_id=event.event_id)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Winner added successfully.')
+            return redirect('organiser_login')
+        else:
+            return render(request, 'add_winner.html', {'form': form})
+    else:
+        form = AddWinnerForm(event_id=event.event_id)
+    return render(request, 'add_winner.html', {'form': form})
 
 @login_required(login_url="events")
 def events_view(request):

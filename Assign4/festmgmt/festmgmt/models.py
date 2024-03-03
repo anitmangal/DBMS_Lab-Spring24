@@ -21,7 +21,7 @@ class useracc(AbstractUser, PermissionsMixin):
         ('participant', 'Participant'),
         ('organizer', 'Organizer'),
     ]
-    role = models.CharField("Role", max_length=40, choices=ROLES, default='participant', blank = False)
+    role = models.CharField("Role", max_length=40, choices=ROLES, default='admin', blank = False)
     
     class Meta:
         verbose_name = 'User'

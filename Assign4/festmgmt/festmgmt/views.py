@@ -58,7 +58,7 @@ def register_view(request):
             user.save()
             return redirect('login')  # Redirect to login page after successful account creation
         else:
-            print(form.errors)
+            return render(request, 'register.html', {'error': 'Invalid form data. Please try again.'})
     return render(request, 'register.html')
 
 @login_required(login_url="student_login")
@@ -68,7 +68,7 @@ def student_login_view(request):
     events = Event.objects.all()
     timeslots = TimeSlot.objects.all()
     venues = Venue.objects.all()
-    message = ''
+    message = 'No events available.'
     participate = Participates.objects.all()
     event_winners = Event_Winner.objects.all()
     
@@ -114,7 +114,7 @@ def student_participated_events_view(request):
     events = Event.objects.all()
     timeslots = TimeSlot.objects.all()
     venues = Venue.objects.all()
-    message = ''
+    message = 'No events available.'
     participate = Participates.objects.all()
     
     curr_username = request.user
@@ -152,7 +152,7 @@ def student_volunteered_events_view(request):
     events = Event.objects.all()
     timeslots = TimeSlot.objects.all()
     venues = Venue.objects.all()
-    message = ''
+    message = 'No events available.'
     
     curr_username = request.user
     student = Student.objects.get(username=curr_username)
@@ -253,7 +253,7 @@ def organiser_login_view(request):
     events = Event.objects.all()
     timeslots = TimeSlot.objects.all()
     venues = Venue.objects.all()
-    message = ''
+    message = 'No events available.'
 
     query = request.GET.get('search')
     search_type = request.GET.get('search_type')
@@ -285,6 +285,7 @@ def add_winner(request, event_id):
             messages.success(request, 'Winner added successfully.')
             return redirect('organiser_login')
         else:
+            messages.error(request, 'Invalid Participant ID.')
             return render(request, 'add_winner.html', {'form': form})
     else:
         form = AddWinnerForm(event_id=event.event_id)
@@ -297,7 +298,7 @@ def events_view(request):
     events = Event.objects.all()
     timeslots = TimeSlot.objects.all()
     venues = Venue.objects.all()
-    message = ''
+    message = 'No events available.'
     participate = Participates.objects.all()
     event_winners = Event_Winner.objects.all()
 
@@ -366,7 +367,7 @@ def participated_events_view(request):
 @login_required(login_url='student_login')
 @transaction.atomic
 def unparticipate_event(request, event_id):
-    if request.user.role != 'student':
+    if request.user.role != 'student' and request.user.role != 'participant':
         return HttpResponseNotAllowed('You are not allowed to access this page')
     event = Event.objects.get(pk=event_id)
     curr_username = request.user

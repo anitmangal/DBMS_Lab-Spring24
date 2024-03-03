@@ -76,12 +76,18 @@
                             <button type="submit">Participate</button>
                         </form>
                     {% else %}
-                        {% if event.event_id in participated_for_events %}
-                            <p>Participated</p>
-                        {% endif %}
-
                         {% if event.event_id in volunteered_for_events %}
-                            <p>Volunteered</p>
+                            <form action="{% url 'unvolunteer_event' event.event_id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit">Unvolunteer</button>
+                            </form>
+                        {% endif %}
+                        
+                        {% if event.event_id in participated_for_events %}
+                            <form action="{% url 'unparticipate_event' event.event_id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit">Unparticipate</button>
+                            </form>
                         {% endif %}
                     {% endif %}
                     {% comment %} <h1>Event Winners</h1>

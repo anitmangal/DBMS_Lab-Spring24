@@ -59,15 +59,19 @@ class Participant(useracc):
 
     participant_id = models.AutoField(primary_key=True)
     is_external = models.BooleanField(default=False)
-    food = models.CharField(max_length=100)
-    accomodation_building = models.CharField(max_length=100)
-    accomodation_room = models.CharField(max_length=100)
+    food = models.CharField(max_length=100, null=True, blank=True)
+    accomodation_building = models.CharField(max_length=100, null=True, blank=True)
+    accomodation_room = models.CharField(max_length=100, null=True, blank=True)
 
     def save(self, *args, **kwargs):
         hallList = ['LBS', 'VS', 'LLR', 'Nehru', 'Patel', 'Azad', 'SBP', 'MS', 'MMM', 'SNIG', 'SNVH', 'MT', 'RP', 'RK']
         roomList = ['101', '102', '103', '104', '105', '106', '107', '108', '109', '110', '201', '202', '203', '204', '205', '206', '207', '208', '209', '210', '301', '302', '303', '304', '305', '306', '307', '308', '309', '310']
         self.accomodation_building = random.choice(hallList)
         self.accomodation_room = random.choice(roomList)
+        if self.role != 'participant':
+            self.food = None
+            self.accomodation_building = None
+            self.accomodation_room = None
         super().save(*args, **kwargs)
 
     class Meta:

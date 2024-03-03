@@ -33,7 +33,7 @@
     <h2>Upcoming Events</h2>
         {% if events %}
             <ul>
-                {% for event in events %}
+                {% for event in volunteered_for_events %}
                 <li>
                     <h2>{{ event.event_name }}</h2>
                     <!-- Other event details -->
@@ -65,24 +65,6 @@
                         </ul>
                     {% else %}
                         <p>No winners declared yet.</p>
-                    {% endif %}
-                    {% if event.event_id not in volunteered_for_events and event.event_id not in participated_for_events %}
-                        <form action="{% url 'volunteer_event' event.event_id %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit">Volunteer</button>
-                        </form>
-                        <form action="{% url 'participate_student_event' event.event_id %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit">Participate</button>
-                        </form>
-                    {% else %}
-                        {% if event.event_id in participated_for_events %}
-                            <p>Participated</p>
-                        {% endif %}
-
-                        {% if event.event_id in volunteered_for_events %}
-                            <p>Volunteered</p>
-                        {% endif %}
                     {% endif %}
                     {% comment %} <h1>Event Winners</h1>
                     {% if event_winners %}
@@ -118,14 +100,9 @@
         {% endif %}
     <!-- </ul> -->
 
-    <!-- Button to switch to participated events -->
-    <form action="{% url 'student_participated_events' %}" method="get">
-        <button type="submit">View Participated Events</button>
-    </form>
-
-    <!-- Button to switch to volunteered events -->
-    <form action="{% url 'student_volunteered_events' %}" method="get">
-        <button type="submit">View Volunteered Events</button>
+    <!-- Button to switch to the original HTML -->
+    <form action="{% url 'student_login' %}" method="get">
+        <button type="submit">View all events</button>
     </form>
 </body>
 </body>

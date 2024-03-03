@@ -84,3 +84,11 @@ a {
 a:hover {
     text-decoration: underline;
 }
+
+.errortext {
+    color: red;
+    text-align: left;
+    margin-top: 2px;
+    margin-left: 5px;
+    font-size: small;
+}

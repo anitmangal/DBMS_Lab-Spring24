@@ -19,7 +19,9 @@ function validate() {
     var yearOfStudy = document.getElementById('yearofstudy').value;
     var org = document.getElementById('isOrganiser');
     var por = document.getElementById('por').value;
-    if (validateName(name) && validateEmail(email) && validatePhone(phone) && validateDOB(dob) && validateGender(mgen, fgen, ogen) && validateCollegeName(collegeName) && validateCollegeLocation(collegeLocation) && validateUsername(username) && validatePassword(password) && validateCnfrmPass(password, cnfrmpass) && validateRollNo(stud, rollNo) && validateDept(stud, dept) && validateYearOfStudy(stud, yearOfStudy) && validatePOR(org, por)) {
+    var veg = document.getElementById('veg');
+    var nonveg = document.getElementById('nonveg');
+    if (validateName(name) && validateEmail(email) && validatePhone(phone) && validateDOB(dob) && validateGender(mgen, fgen, ogen) && validateCollegeName(collegeName) && validateCollegeLocation(collegeLocation) && validateUsername(username) && validatePassword(password) && validateCnfrmPass(password, cnfrmpass) && validateRollNo(stud, rollNo) && validateDept(stud, dept) && validateYearOfStudy(stud, yearOfStudy) && validatePOR(org, por) && validateVegNonVeg(veg, nonveg)) {
         console.log('YOU BASED');
         return true;
     }
@@ -52,7 +54,7 @@ function validatePhone(phone) {
     if (phoneRegex.test(phone)) {
         return true;
     } else {
-        alert("Phone number should contain exactly 10 digits");
+        alert("Phone number should be a valid number (+countrycode followed by 10 digit numbers, no spacess)");
         return false;
     }
 }
@@ -179,6 +181,16 @@ function validatePOR(org, por) {
         }
     }
     return true;
+}
+
+function validateVegNonVeg(veg, nonveg) {
+    if (veg.checked || nonveg.checked) {
+        return true;
+    }
+    else {
+        alert("Choose a food preference");
+        return false;
+    }
 }
 
 function openTab(evt, tabName) {

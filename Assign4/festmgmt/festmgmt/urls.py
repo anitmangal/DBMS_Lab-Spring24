@@ -15,6 +15,7 @@ urlpatterns = [
     path('events/', views.events_view, name='events'),
     path('participated_events/', views.participated_events_view, name='participated_events'),
     path('login/organiser/', views.organiser_login_view, name='organiser_login'),
+    path('login/organiser/add_winner/<int:event_id>/', views.add_winner, name='add_winner'),    
     path('admin/', admin.site.urls),
     path('admin/', admin.site.index, name='adminview'),
     path('logout/', views.logout_view, name='logout'),

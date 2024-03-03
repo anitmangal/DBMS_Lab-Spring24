@@ -60,6 +60,20 @@
                         None<br>
                     {% endif %}
                     <!-- Add buttons for volunteering, organizing, participating here -->
+                    {% if event.event_id in declared_winner_events %}
+                        <h3>Winners:</h3>
+                        <ul>
+                            {% for winner in event_winners %}
+                                {% if winner.event_id.event_id == event.event_id%}
+                                    {% with winner.participant_id.participant_id as participant_id %}
+                                        <li>{{ winner.position }}: {{ participant_id }}</li>
+                                    {% endwith %}
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No winners declared yet.</p>
+                    {% endif %}
                     {% if event.event_id not in participated_for_events %}
                         <form action="{% url 'participate_event' event.event_id %}" method="post">
                             {% csrf_token %}
@@ -73,7 +87,31 @@
                             </form>
                         {% endif %}
                     {% endif %}
-
+                    {% comment %} <h1>Event Winners</h1>
+                    {% if event_winners %}
+                        <table border="1">
+                            <thead>
+                                <tr>
+                                    <th>Event ID</th>
+                                    <th>Participant Name</th>
+                                    <th>Position</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <td>{{ winner.event_id }}</td>
+                                <td>
+                                    {% with winner.participant_id as participant_id %}
+                                        {% with participant_id|get_participant_name as participant_name %}
+                                            {{ participant_name }}
+                                        {% endwith %}
+                                    {% endwith %}
+                                </td>
+                                <td>{{ winner.position }}</td>
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <p>No winners found.</p>
+                    {% endif %} {% endcomment %}
                 </li>
                 {% endfor %}
         </ul>

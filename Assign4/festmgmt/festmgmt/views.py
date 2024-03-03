@@ -299,11 +299,15 @@ def events_view(request):
     venues = Venue.objects.all()
     message = ''
     participate = Participates.objects.all()
+    event_winners = Event_Winner.objects.all()
 
     curr_username = request.user
     participant = Participant.objects.get(username=curr_username)
     participated_for_events = []
+    declared_winner_events = []
     if participant.is_authenticated:
+        for event in event_winners:
+            declared_winner_events.append(event.event_id.event_id)
         for participated_event in participate:
             if participated_event.participant_id.participant_id == participant.participant_id:                
                 participated_for_events.append(participated_event.event_id.event_id)
@@ -323,7 +327,7 @@ def events_view(request):
         if not events.exists():
             message = 'No such events!'
 
-    return render(request, 'events.html', {'events': events, 'timeslots': timeslots, 'venues': venues, 'message': message, 'query': query, 'search_type': search_type, 'participated_for_events': participated_for_events})
+    return render(request, 'events.html', {'events': events, 'timeslots': timeslots, 'venues': venues, 'message': message, 'query': query, 'search_type': search_type, 'participated_for_events': participated_for_events, 'event_winners': event_winners, 'declared_winner_events': declared_winner_events})
 
 @login_required(login_url="events")
 def participated_events_view(request):

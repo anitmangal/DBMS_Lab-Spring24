@@ -86,19 +86,23 @@ class OrganiserCreationForm(UserCreationForm):
     
 class AddWinnerForm(forms.ModelForm):
     participant_id = forms.ModelChoiceField(queryset=Participant.objects.all(), required=True, widget=forms.TextInput)
-    event_id = forms.ModelChoiceField(queryset=Event.objects.all(), required=True, widget=forms.TextInput)
     position = forms.ChoiceField(choices=[(x, x) for x in range(1, 4)], required=True)
 
     class Meta:
         model = Event_Winner
-        fields = ['participant_id', 'event_id', 'position']
+        fields = ['participant_id', 'position']
+
+    def __init__(self, *args, **kwargs):
+        self.event_id = kwargs.pop('event_id', None)
+        super(AddWinnerForm, self).__init__(*args, **kwargs)
 
     @transaction.atomic
     def save(self, commit=True):
         if commit:
+            event = Event.objects.get(event_id=self.event_id)
             Event_Winner.objects.create(
-                participant=self.cleaned_data['participant_id'],
-                event=self.cleaned_data['event_id'],
+                participant_id=self.cleaned_data['participant_id'],
+                event_id=event,
                 position=self.cleaned_data['position'],
             )
         else:

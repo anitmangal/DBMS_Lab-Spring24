@@ -92,8 +92,8 @@ class Admin(useracc):
 class TimeSlot(models.Model):
     time_slot_id = models.AutoField(primary_key=True)
     date = models.DateField()
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField(null=True, blank=True) # Allow null values here ????  check other places too
+    start_time = models.TimeField()
+    end_time = models.TimeField(null=True, blank=True)
     class Meta:
         verbose_name = 'TimeSlot'
         verbose_name_plural = 'TimeSlots'

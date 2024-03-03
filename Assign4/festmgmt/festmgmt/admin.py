@@ -2,10 +2,11 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate
+from django.contrib.auth.models import Group
 # Register your models here.
 
-from .forms import UserCreationForm, ParticipantCreationForm, StudentCreationForm, OrganiserCreationForm
-from .models import useracc, Student, Organiser, Participant
+from .forms import UserCreationForm, ParticipantCreationForm, StudentCreationForm, OrganiserCreationForm, TimeSlotCreationForm, VenueCreationForm
+from .models import useracc, Student, Organiser, Participant, TimeSlot, Venue
     
 class CustomUserAdmin(UserAdmin):
     def save_model(self, request, obj, form, change):
@@ -55,9 +56,35 @@ class ParticipantAdmin(UserAdmin):
         ),
     )
 
+class TimeSlotAdmin(admin.ModelAdmin):
+    model = TimeSlot
+    add_form = TimeSlotCreationForm
+    list_display = ['time_slot_id', 'date', 'start_time', 'end_time']
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('date', 'start_time', 'end_time')}
+        ),
+    )
+
+class VenueAdmin(admin.ModelAdmin):
+    model = Venue
+    add_form = VenueCreationForm
+    list_display = ['venue_name', 'building', 'audio_visual', 'computer_terminals', 'capacity']
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('venue_name', 'building', 'audio_visual', 'computer_terminals', 'capacity')}
+        ),
+    )
+
+admin.site.unregister(Group)
+
 admin.site.register(useracc, CustomUserAdmin)
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Organiser, OrganiserAdmin)
 admin.site.register(Participant, ParticipantAdmin)
+admin.site.register(TimeSlot, TimeSlotAdmin)
+admin.site.register(Venue, VenueAdmin)
 
 admin.site.site_header = 'Fest Management System'

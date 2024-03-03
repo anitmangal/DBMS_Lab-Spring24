@@ -1,6 +1,6 @@
 from django import forms
 from django.db import transaction
-from .models import useracc, Student, Organiser, Participant, Event_Winner, Event
+from .models import useracc, Student, Organiser, Participant, Event_Winner, Event, TimeSlot, Venue
 
 class UserCreationForm(forms.ModelForm):
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
@@ -104,6 +104,50 @@ class AddWinnerForm(forms.ModelForm):
                 participant_id=self.cleaned_data['participant_id'],
                 event_id=event,
                 position=self.cleaned_data['position'],
+            )
+        else:
+            print("Error")
+
+class TimeSlotCreationForm(forms.ModelForm):
+    date = forms.DateField(required=True)
+    start_time = forms.TimeField(required=True)
+    end_time = forms.TimeField(required=True)
+
+    class Meta:
+        model = TimeSlot
+        fields = ['date', 'start_time', 'end_time']
+
+    @transaction.atomic
+    def save(self, commit=True):
+        if commit:
+            Event.objects.create(
+                date=self.cleaned_data['date'],
+                start_time=self.cleaned_data['start_time'],
+                end_time=self.cleaned_data['end_time'],
+            )
+        else:
+            print("Error")
+
+class VenueCreationForm(forms.ModelForm):
+    venue_name = forms.CharField(required=True)
+    building = forms.CharField(required=True)
+    audio_visual = forms.BooleanField(required=True)
+    computer_terminals = forms.BooleanField(required=True)
+    capacity = forms.IntegerField(required=True)
+
+    class Meta:
+        model = Venue
+        fields = ['venue_name', 'building', 'audio_visual', 'computer_terminals', 'capacity']
+
+    @transaction.atomic
+    def save(self, commit=True):
+        if commit:
+            Venue.objects.create(
+                venue_name=self.cleaned_data['venue_name'],
+                building=self.cleaned_data['building'],
+                audio_visual=self.cleaned_data['audio_visual'],
+                computer_terminals=self.cleaned_data['computer_terminals'],
+                capacity=self.cleaned_data['capacity'],
             )
         else:
             print("Error")

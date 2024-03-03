@@ -1,6 +1,6 @@
 from django import forms
 from django.db import transaction
-from .models import useracc, Student, Organiser, Participant, Event_Winner, Event
+from .models import useracc, Student, Organiser, Participant
 
 class UserCreationForm(forms.ModelForm):
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
@@ -83,27 +83,3 @@ class OrganiserCreationForm(UserCreationForm):
                 position_of_responsibility=self.cleaned_data['position_of_responsibility'],
             )
         return user
-    
-class AddWinnerForm(forms.ModelForm):
-    participant_id = forms.ModelChoiceField(queryset=Participant.objects.all(), required=True, widget=forms.TextInput)
-    position = forms.ChoiceField(choices=[(x, x) for x in range(1, 4)], required=True)
-
-    class Meta:
-        model = Event_Winner
-        fields = ['participant_id', 'position']
-
-    def __init__(self, *args, **kwargs):
-        self.event_id = kwargs.pop('event_id', None)
-        super(AddWinnerForm, self).__init__(*args, **kwargs)
-
-    @transaction.atomic
-    def save(self, commit=True):
-        if commit:
-            event = Event.objects.get(event_id=self.event_id)
-            Event_Winner.objects.create(
-                participant_id=self.cleaned_data['participant_id'],
-                event_id=event,
-                position=self.cleaned_data['position'],
-            )
-        else:
-            print("Error")

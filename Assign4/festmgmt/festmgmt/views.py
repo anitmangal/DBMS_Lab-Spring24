@@ -144,15 +144,15 @@ def organiser_login_view(request):
 def add_winner(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
     if request.method == 'POST':
-        form = AddWinnerForm(request.POST)
+        form = AddWinnerForm(request.POST, event_id=event.event_id)
         if form.is_valid():
-            winner = form.save(commit=False)
-            winner.event_id = event
-            winner.save()
+            form.save()
             messages.success(request, 'Winner added successfully.')
             return redirect('organiser_login')
+        else:
+            return render(request, 'add_winner.html', {'form': form})
     else:
-        form = AddWinnerForm()
+        form = AddWinnerForm(event_id=event.event_id)
     return render(request, 'add_winner.html', {'form': form})
 
 def events_view(request):

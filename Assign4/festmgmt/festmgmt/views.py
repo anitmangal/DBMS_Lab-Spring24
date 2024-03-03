@@ -337,7 +337,7 @@ def participated_events_view(request):
     events = Event.objects.all()
     timeslots = TimeSlot.objects.all()
     venues = Venue.objects.all()
-    message = ''
+    message = 'No events available.'
     participate = Participates.objects.all()
 
     curr_username = request.user

@@ -67,7 +67,10 @@
                         </form>
                     {% else %}
                         {% if event.event_id in participated_for_events %}
-                            <p>Participated</p>
+                            <form action="{% url 'unparticipate_event' event.event_id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit">Unparticipate</button>
+                            </form>
                         {% endif %}
                     {% endif %}
 

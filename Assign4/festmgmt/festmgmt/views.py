@@ -8,6 +8,9 @@ from .forms import UserCreationForm, StudentCreationForm, OrganiserCreationForm,
 from .models import Event, Volunteer, Student, Participant, Participates, useracc, TimeSlot, Venue, Event_Winner
 from django.db import transaction
 from django.db.models import Q
+from django.db.models import CASCADE
+from django.db.models import deletion
+
 
 def login_view(request):
     if request.user.is_authenticated:
@@ -316,3 +319,38 @@ def participated_events_view(request):
             message = 'No such events!'
 
     return render(request, 'participated_events.html', {'events': events, 'timeslots': timeslots, 'venues': venues, 'message': message, 'query': query, 'search_type': search_type, 'participated_for_events': participated_for_events})
+
+@login_required(login_url='student_login')
+@transaction.atomic
+def unparticipate_event(request, event_id):
+    event = Event.objects.get(pk=event_id)
+    curr_username = request.user
+    user_acc = useracc.objects.get(username=curr_username)
+    # get the participant object
+    participant = Participant.objects.get(user_id=user_acc.user_id)
+    print(participant.participant_id)
+    
+    if Participates.objects.filter(participant_id=participant.participant_id, event_id=event.event_id).exists():
+        # delete the entry from participates table
+        Participates.objects.filter(participant_id=participant, event_id=event).delete()
+    
+    if user_acc.role == 'participant':
+        return redirect('events')
+    # if not Participates.objects.filter(participant_id=participant.participant_id).exists():
+    #     print('error here')
+    #     participant = Participant.objects.filter(user_id=user_acc.user_id)
+    #     collector = deletion.Collector(using=participant._state.db)
+    #     collector.add([participant])
+    #     collector.delete()
+    return redirect('student_login')
+
+@login_required(login_url='student_login')
+@transaction.atomic
+def unvolunteer_student_event(request, event_id):
+    event = Event.objects.get(pk=event_id)
+    curr_username = request.user
+    student = Student.objects.get(username=curr_username)
+    if Volunteer.objects.filter(student=student, event=event).exists():
+        print('deleting')
+        Volunteer.objects.filter(student=student, event=event).delete()
+    return redirect('student_login')

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/dashboard_style.css' %}">
-    <title>Participant Dashboard</title>
+    <title>Participated Events</title>
 </head>
 <body>
     <div style="float: right; margin-right: 20px;">
@@ -15,15 +15,15 @@
         </form>
     </div>
     <div style="float: right; margin-right: 20px;">
-        <div class="accomodation-details">
-            <p><strong>Your Accomodation Details:</strong></p>
+        <div class="accommodation-details">
+            <p><strong>Your Accommodation Details:</strong></p>
             <p><strong>Food Preference:</strong> {{ user.participant.food }}</p>
             <p><strong>Accommodation Building:</strong> {{ user.participant.accomodation_building }}</p>
             <p><strong>Accommodation Room:</strong> {{ user.participant.accomodation_room }}</p>
         </div>
     </div>
 
-    <h1>Welcome, {{ user.username }}!</h1>
+    <h1>Participated Events</h1>
 
     <!-- Search form -->
     <form method="GET" action="">
@@ -38,10 +38,9 @@
         <input type="submit" value="Search">
     </form>
 
-    <h2>Upcoming Events</h2>
     {% if events %}
         <ul>
-            {% for event in events %}
+            {% for event in participated_for_events %}
                 <li>
                     <h2>{{ event.event_name }}</h2>
                     <!-- Other event details -->
@@ -59,28 +58,16 @@
                     {% else %}
                         None<br>
                     {% endif %}
-                    <!-- Add buttons for volunteering, organizing, participating here -->
-                    {% if event.event_id not in participated_for_events %}
-                        <form action="{% url 'participate_event' event.event_id %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit">Participate</button>
-                        </form>
-                    {% else %}
-                        {% if event.event_id in participated_for_events %}
-                            <p>Participated</p>
-                        {% endif %}
-                    {% endif %}
-
                 </li>
-                {% endfor %}
+            {% endfor %}
         </ul>
     {% else %}
-        <p>No events available.</p>
+        <p>No participated events available.</p>
     {% endif %}
 
-    <!-- Button to switch to participated events -->
-    <form action="{% url 'participated_events' %}" method="get">
-        <button type="submit">View Participated Events</button>
+    <!-- Button to switch to the original HTML -->
+    <form action="{% url 'events' %}" method="get">
+        <button type="submit">View all events</button>
     </form>
 </body>
 </html>

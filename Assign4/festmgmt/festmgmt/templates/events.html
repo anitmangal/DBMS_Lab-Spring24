@@ -86,17 +86,19 @@
                     {% else %}
                         <p>No winners declared yet.</p>
                     {% endif %}
-                    {% if event.event_id not in participated_for_events %}
-                        <form action="{% url 'participate_event' event.event_id %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit">Participate</button>
-                        </form>
-                    {% else %}
-                        {% if event.event_id in participated_for_events %}
-                            <form action="{% url 'unparticipate_event' event.event_id %}" method="post">
+                    {% if not event.is_done %}
+                        {% if event.event_id not in participated_for_events %}
+                            <form action="{% url 'participate_event' event.event_id %}" method="post">
                                 {% csrf_token %}
-                                <button type="submit">Unparticipate</button>
+                                <button type="submit">Participate</button>
                             </form>
+                        {% else %}
+                            {% if event.event_id in participated_for_events %}
+                                <form action="{% url 'unparticipate_event' event.event_id %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit">Unparticipate</button>
+                                </form>
+                            {% endif %}
                         {% endif %}
                     {% endif %}
                     {% comment %} <h1>Event Winners</h1>

@@ -116,6 +116,7 @@ class Event(models.Model):
     event_name = models.CharField(max_length=300)
     event_type = models.CharField(max_length=300)
     event_description = models.TextField()
+    is_done = models.BooleanField(default=False)
 
     time_slot_id = models.ForeignKey(TimeSlot, on_delete=models.CASCADE)
     venue_name = models.ForeignKey(Venue, on_delete=models.CASCADE)

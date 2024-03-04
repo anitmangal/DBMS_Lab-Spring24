@@ -70,7 +70,10 @@ def student_login_view(request):
     venues = Venue.objects.all()
     message = 'No events available.'
     participate = Participates.objects.all()
+    participants = Participant.objects.all()
     event_winners = Event_Winner.objects.all()
+    
+    participant_id_student = -1
     
     curr_username = request.user
     student = Student.objects.get(username=curr_username)
@@ -86,6 +89,7 @@ def student_login_view(request):
         # find the participant associated with the user_id of the student
         try:
             curr_participant = Participant.objects.get(user_id=student.user_id)
+            participant_id_student = curr_participant.participant_id
             for participated_event in participate:
                 if participated_event.participant_id.participant_id == curr_participant.participant_id:                
                     participated_for_events.append(participated_event.event_id.event_id)
@@ -106,7 +110,7 @@ def student_login_view(request):
         if not events.exists():
             message = 'No such events!'
 
-    return render(request, 'student_login.html', {'events': events, 'timeslots': timeslots, 'venues': venues, 'message': message, 'query': query, 'search_type': search_type, 'volunteered_for_events': volunteered_for_events, 'participated_for_events': participated_for_events, 'event_winners': event_winners, 'declared_winner_events': declared_winner_events})
+    return render(request, 'student_login.html', {'participant_id_student':participant_id_student, 'events': events, 'timeslots': timeslots, 'venues': venues, 'message': message, 'query': query, 'search_type': search_type, 'volunteered_for_events': volunteered_for_events, 'participated_for_events': participated_for_events, 'event_winners': event_winners, 'declared_winner_events': declared_winner_events})
 
 def student_participated_events_view(request):
     if request.user.role != 'student':
@@ -116,14 +120,20 @@ def student_participated_events_view(request):
     venues = Venue.objects.all()
     message = 'No events available.'
     participate = Participates.objects.all()
+    event_winners = Event_Winner.objects.all()
+    participant_id_student = -1
     
     curr_username = request.user
     student = Student.objects.get(username=curr_username)
     participated_for_events = []
+    declared_winner_events = []
     if student.is_authenticated:
         # find the participant associated with the user_id of the student
+        for event in event_winners:
+            declared_winner_events.append(event.event_id.event_id)
         try:
             curr_participant = Participant.objects.get(user_id=student.user_id)
+            participant_id_student = curr_participant.participant_id
         except:
             curr_participant = None
         for participated_event in participate:
@@ -144,7 +154,7 @@ def student_participated_events_view(request):
         if not events.exists():
             message = 'No such events!'
 
-    return render(request, 'student_participated_events.html', {'events': events, 'timeslots': timeslots, 'venues': venues, 'message': message, 'query': query, 'search_type': search_type, 'participated_for_events': participated_for_events})
+    return render(request, 'student_participated_events.html', {'participant_id_student':participant_id_student, 'events': events, 'timeslots': timeslots, 'venues': venues, 'message': message, 'query': query, 'search_type': search_type, 'participated_for_events': participated_for_events, 'event_winners': event_winners, 'declared_winner_events': declared_winner_events})
 
 def student_volunteered_events_view(request):
     if request.user.role != 'student':
@@ -339,11 +349,15 @@ def participated_events_view(request):
     venues = Venue.objects.all()
     message = ''
     participate = Participates.objects.all()
+    event_winners = Event_Winner.objects.all()
 
     curr_username = request.user
     participant = Participant.objects.get(username=curr_username)
     participated_for_events = []
+    declared_winner_events = []
     if participant.is_authenticated:
+        for event in event_winners:
+            declared_winner_events.append(event.event_id.event_id)
         for participated_event in participate:
             if participated_event.participant_id.participant_id == participant.participant_id:                
                 participated_for_events.append(participated_event.event_id)
@@ -362,7 +376,7 @@ def participated_events_view(request):
         if not events.exists():
             message = 'No such events!'
 
-    return render(request, 'participated_events.html', {'events': events, 'timeslots': timeslots, 'venues': venues, 'message': message, 'query': query, 'search_type': search_type, 'participated_for_events': participated_for_events})
+    return render(request, 'participated_events.html', {'declared_winner_events': declared_winner_events, 'event_winners': event_winners, 'events': events, 'timeslots': timeslots, 'venues': venues, 'message': message, 'query': query, 'search_type': search_type, 'participated_for_events': participated_for_events})
 
 @login_required(login_url='student_login')
 @transaction.atomic

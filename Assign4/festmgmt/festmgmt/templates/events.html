@@ -20,6 +20,7 @@
             <p><strong>Food Preference:</strong> {{ user.participant.food }}</p>
             <p><strong>Accommodation Building:</strong> {{ user.participant.accomodation_building }}</p>
             <p><strong>Accommodation Room:</strong> {{ user.participant.accomodation_room }}</p>
+            <p><strong>Participant ID:</strong> {{ user.participant.participant_id }}</p>
         </div>
     </div>
 
@@ -63,13 +64,24 @@
                     {% if event.event_id in declared_winner_events %}
                         <h3>Winners:</h3>
                         <ul>
-                            {% for winner in event_winners %}
-                                {% if winner.event_id.event_id == event.event_id%}
-                                    {% with winner.participant_id.participant_id as participant_id %}
-                                        <li>{{ winner.position }}: {{ participant_id }}</li>
-                                    {% endwith %}
-                                {% endif %}
-                            {% endfor %}
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Position</th>
+                                        <th>Participant ID</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for winner in event_winners %}
+                                        {% if winner.event_id.event_id == event.event_id %}
+                                        <tr>
+                                            <td>{{ winner.position }}</td>
+                                            <td>{{ winner.participant_id.participant_id }}</td>
+                                        </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                    </tbody>
+                            </table>
                         </ul>
                     {% else %}
                         <p>No winners declared yet.</p>

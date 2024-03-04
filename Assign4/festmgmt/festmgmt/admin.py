@@ -5,8 +5,8 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import Group
 # Register your models here.
 
-from .forms import UserCreationForm, ParticipantCreationForm, StudentCreationForm, OrganiserCreationForm, TimeSlotCreationForm, VenueCreationForm
-from .models import useracc, Student, Organiser, Participant, TimeSlot, Venue
+from .forms import UserCreationForm, ParticipantCreationForm, StudentCreationForm, OrganiserCreationForm, TimeSlotCreationForm, VenueCreationForm, EventCreationForm
+from .models import useracc, Student, Organiser, Participant, TimeSlot, Venue, Event
     
 class CustomUserAdmin(UserAdmin):
     def save_model(self, request, obj, form, change):
@@ -78,6 +78,17 @@ class VenueAdmin(admin.ModelAdmin):
         ),
     )
 
+class EventAdmin(admin.ModelAdmin):
+    model = Event
+    add_form = EventCreationForm
+    list_display = ['event_id', 'event_name', 'event_type', 'event_description', 'time_slot_id', 'venue_name']
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('event_name', 'event_type', 'event_description', 'time_slot_id', 'venue_name')}
+        ),
+    )
+
 admin.site.unregister(Group)
 
 admin.site.register(useracc, CustomUserAdmin)
@@ -86,5 +97,6 @@ admin.site.register(Organiser, OrganiserAdmin)
 admin.site.register(Participant, ParticipantAdmin)
 admin.site.register(TimeSlot, TimeSlotAdmin)
 admin.site.register(Venue, VenueAdmin)
+admin.site.register(Event, EventAdmin)
 
 admin.site.site_header = 'Fest Management System'

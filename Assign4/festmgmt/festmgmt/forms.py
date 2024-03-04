@@ -100,6 +100,8 @@ class AddWinnerForm(forms.ModelForm):
     def save(self, commit=True):
         if commit:
             event = Event.objects.get(event_id=self.event_id)
+            event.is_done = True
+            event.save()
             Event_Winner.objects.create(
                 participant_id=self.cleaned_data['participant_id'],
                 event_id=event,
@@ -148,6 +150,30 @@ class VenueCreationForm(forms.ModelForm):
                 audio_visual=self.cleaned_data['audio_visual'],
                 computer_terminals=self.cleaned_data['computer_terminals'],
                 capacity=self.cleaned_data['capacity'],
+            )
+        else:
+            print("Error")
+
+class EventCreationForm(forms.ModelForm):
+    event_name = forms.CharField(required=True)
+    event_type = forms.CharField(required=True)
+    event_description = forms.CharField(required=True)
+    time_slot_id = forms.ModelChoiceField(queryset=TimeSlot.objects.all(), required=True, widget=forms.TextInput)
+    venue_name = forms.ModelChoiceField(queryset=Venue.objects.all(), required=True, widget=forms.TextInput)
+
+    class Meta:
+        model = Event
+        fields = ['event_name', 'event_type', 'event_description', 'time_slot_id', 'venue_name']
+
+    @transaction.atomic
+    def save(self, commit=True):
+        if commit:
+            Event.objects.create(
+                event_name=self.cleaned_data['event_name'],
+                event_type=self.cleaned_data['event_type'],
+                event_description=self.cleaned_data['event_description'],
+                time_slot_id=self.cleaned_data['time_slot_id'],
+                venue_name=self.cleaned_data['venue_name'],
             )
         else:
             print("Error")

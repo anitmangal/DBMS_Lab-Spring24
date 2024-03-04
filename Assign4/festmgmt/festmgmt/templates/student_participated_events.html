@@ -16,6 +16,12 @@
     </div>
     
     <h1>Welcome, {{ user.username }}!</h1>
+    <p><strong>Participant ID:</strong> {% if participant_id_student != -1 %}
+        {{ participant_id_student }}
+        {% else %}
+        <p>No participant ID assigned yet</p>
+    {% endif %}
+    </p>
 
     <!-- Search form -->
     <form method="GET" action="">
@@ -55,13 +61,24 @@
                     {% if event.event_id in declared_winner_events %}
                         <h3>Winners:</h3>
                         <ul>
-                            {% for winner in event_winners %}
-                                {% if winner.event_id.event_id == event.event_id%}
-                                    {% with winner.participant_id.participant_id as participant_id %}
-                                        <li>{{ winner.position }}: {{ participant_id }}</li>
-                                    {% endwith %}
-                                {% endif %}
-                            {% endfor %}
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Position</th>
+                                        <th>Participant ID</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for winner in event_winners %}
+                                        {% if winner.event_id.event_id == event.event_id %}
+                                        <tr>
+                                            <td>{{ winner.position }}</td>
+                                            <td>{{ winner.participant_id.participant_id }}</td>
+                                        </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                    </tbody>
+                            </table>
                         </ul>
                     {% else %}
                         <p>No winners declared yet.</p>

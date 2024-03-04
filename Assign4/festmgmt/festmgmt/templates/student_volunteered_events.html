@@ -52,6 +52,7 @@
                         None<br>
                     {% endif %}
                     <!-- Add buttons for volunteering, organizing, participating here -->
+                    {%comment%}
                     {% if event.event_id in declared_winner_events %}
                         <h3>Winners:</h3>
                         <ul>
@@ -66,7 +67,7 @@
                     {% else %}
                         <p>No winners declared yet.</p>
                     {% endif %}
-                    {% comment %} <h1>Event Winners</h1>
+                    <h1>Event Winners</h1>
                     {% if event_winners %}
                         <table border="1">
                             <thead>

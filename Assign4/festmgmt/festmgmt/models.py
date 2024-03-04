@@ -2,6 +2,11 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, PermissionsMixin, UserManager
 from phonenumber_field.modelfields import PhoneNumberField
 import random
+from django.dispatch import receiver
+from django.db.models.signals import pre_save
+from django.core.exceptions import ValidationError
+    
+
 
 class useracc(AbstractUser, PermissionsMixin):
 
@@ -99,6 +104,8 @@ class TimeSlot(models.Model):
         verbose_name_plural = 'TimeSlots'
         ordering = ['-time_slot_id']
     REQUIRED_FIELDS = ['time_slot_id', 'date', 'start_time']
+    def __str__(self):
+        return f"{self.date} {self.start_time} - {self.end_time}"
 
 class Venue(models.Model):
     venue_name = models.CharField(max_length=300, primary_key=True)
@@ -111,6 +118,10 @@ class Venue(models.Model):
         verbose_name_plural = 'Venues'
         ordering = ['-venue_name']
     REQUIRED_FIELDS = ['venue_name', 'building', 'audio_visual', 'computer_terminals', 'capacity']
+    def __str__(self):
+        return self.venue_name
+
+
 class Event(models.Model):
     event_id = models.AutoField(primary_key=True)
     event_name = models.CharField(max_length=300)

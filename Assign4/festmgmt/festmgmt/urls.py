@@ -20,6 +20,7 @@ urlpatterns = [
     path('login/organiser/add_winner/<int:event_id>/', views.add_winner, name='add_winner'),
     path('admin/', admin.site.urls),
     path('admin/', admin.site.index, name='adminview'),
-    path('logout/', views.logout_view, name='logout')
+    path('logout/', views.logout_view, name='logout'),
+    path('create_event/', views.create_event_view, name='create_event')
     # Add more URL patterns as needed
 ]

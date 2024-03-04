@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Event</title>
+    <link rel="stylesheet" href="{% static 'css/register_style.css' %}">
+</head>
+<body>
+    <h1>Create Event</h1><br>
+    <div class="formDiv">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.event_name.label_tag }} {{ form.event_name }}<br>
+            {{ form.event_type.label_tag }} {{ form.event_type }}<br>
+            {{ form.event_description.label_tag }} {{ form.event_description }}<br>
+            {{ form.venue_name.label_tag }} {{ form.venue_name }}<br>
+            {{ form.time_slot_id.label_tag }} {{ form.time_slot_id }}<br>
+            <button type="submit" class="btn btn-primary">Create Event</button>
+            {% if error_message %}
+                <p style="color: red;">{{ error_message }}</p>
+            {% endif %}
+        </form>
+    </div>
+</body>
+</html>

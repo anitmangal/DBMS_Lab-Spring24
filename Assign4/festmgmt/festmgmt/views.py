@@ -4,13 +4,17 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib import admin, messages
 from django.shortcuts import get_object_or_404
-from .forms import UserCreationForm, StudentCreationForm, OrganiserCreationForm, ParticipantCreationForm, AddWinnerForm
+from .forms import UserCreationForm, StudentCreationForm, OrganiserCreationForm, ParticipantCreationForm, AddWinnerForm, EventCreationForm
 from .models import Event, Volunteer, Student, Participant, Participates, useracc, TimeSlot, Venue, Event_Winner
 from django.db import transaction
 from django.db.models import Q
 from django.db.models import CASCADE
 from django.db.models import deletion
-from django.http import HttpResponseNotAllowed
+from django.http import HttpResponseNotAllowed, JsonResponse, HttpResponse
+from django.shortcuts import render
+from django.template.loader import render_to_string
+from datetime import datetime
+from django import forms
 
 
 def login_view(request):
@@ -300,6 +304,30 @@ def add_winner(request, event_id):
     else:
         form = AddWinnerForm(event_id=event.event_id)
     return render(request, 'add_winner.html', {'form': form})
+
+@login_required(login_url="organiser_login")
+def create_event_view(request):
+    message = None
+    if request.method == 'POST':
+        form = EventCreationForm(request.POST)
+
+        if form.is_valid():
+            try:
+                form.save()
+                return redirect('organiser_login')
+            except forms.ValidationError as e:
+                message = str(e)[2:-2]
+    else:
+        form = EventCreationForm()
+    return render(request, 'create_event.html', {'form': form, 'error_message': message})
+
+@login_required(login_url="organiser_login")
+def load_timeslots(request):
+    date_str = request.GET.get('date')
+    date_id = datetime.strptime(date_str, '%Y-%m-%d').date()
+    timeslots = TimeSlot.objects.filter(date=date_id).order_by('start_time')
+    html = render_to_string('timeslots_dropdown_list_options.html', {'timeslots': timeslots})
+    return HttpResponse(html)
 
 @login_required(login_url="events")
 def events_view(request):

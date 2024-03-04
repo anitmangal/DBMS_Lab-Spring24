@@ -95,6 +95,8 @@ class AddWinnerForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.event_id = kwargs.pop('event_id', None)
         super(AddWinnerForm, self).__init__(*args, **kwargs)
+        participants = Participant.objects.exclude(event_winner__event_id=self.event_id)
+        self.fields['participant_id'].queryset = participants
 
     @transaction.atomic
     def save(self, commit=True):
@@ -154,26 +156,37 @@ class VenueCreationForm(forms.ModelForm):
         else:
             print("Error")
 
+class TimeSlotChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+        return f"{obj.start_time} to {obj.end_time}"
+    
+class VenueChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+        return obj.venue_name
+
+class DateChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+        return obj['date']
+
 class EventCreationForm(forms.ModelForm):
-    event_name = forms.CharField(required=True)
-    event_type = forms.CharField(required=True)
-    event_description = forms.CharField(required=True)
-    time_slot_id = forms.ModelChoiceField(queryset=TimeSlot.objects.all(), required=True, widget=forms.TextInput)
-    venue_name = forms.ModelChoiceField(queryset=Venue.objects.all(), required=True, widget=forms.TextInput)
+    time_slot_id = forms.ModelChoiceField(
+        queryset=TimeSlot.objects.all().order_by('date', 'start_time'),
+        widget=forms.RadioSelect,
+        empty_label=None,
+        label="Select Time Slot :"
+    )
+    venue_name = forms.ModelChoiceField(queryset=Venue.objects.all(), required=True)
 
     class Meta:
         model = Event
-        fields = ['event_name', 'event_type', 'event_description', 'time_slot_id', 'venue_name']
+        fields = ['event_name', 'event_type', 'event_description','venue_name', 'time_slot_id']
 
     @transaction.atomic
     def save(self, commit=True):
+        event = super().save(commit=False)
+        existing_event = Event.objects.filter(time_slot_id=self.cleaned_data['time_slot_id'], venue_name=self.cleaned_data['venue_name'])
+        if existing_event:
+            raise forms.ValidationError("The venue is already booked for the selected time slot.")
         if commit:
-            Event.objects.create(
-                event_name=self.cleaned_data['event_name'],
-                event_type=self.cleaned_data['event_type'],
-                event_description=self.cleaned_data['event_description'],
-                time_slot_id=self.cleaned_data['time_slot_id'],
-                venue_name=self.cleaned_data['venue_name'],
-            )
-        else:
-            print("Error")
+            event.save()
+        return event

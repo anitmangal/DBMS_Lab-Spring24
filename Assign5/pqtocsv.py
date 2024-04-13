@@ -1,6 +1,6 @@
 import pandas as pd
 
-rootfile='data/yellow_tripdata_2024-01'
+rootfile='taxi/yellow_tripdata_2024-01'
 
 # Read Parquet file
 parquet_file = rootfile + '.parquet'

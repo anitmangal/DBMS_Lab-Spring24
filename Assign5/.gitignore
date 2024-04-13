@@ -1,2 +1,5 @@
 *.txt
 *.parquet
+*.csv
+node_modules
+__pycache__

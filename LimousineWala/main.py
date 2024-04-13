@@ -2,8 +2,8 @@ import os
 import time
 # SELECT VendorID, tpep_pickup_datetime, RatecodeID FROM table WHERE RatecodeID > 100 AND fare_amount < 10;
 
-inputDir = "/taxi/yellow_taxi_100.csv"
-outputFolder = "/taxi"
+inputDir = "data/yellow_tripdata_2024-01.csv"
+outputFolder = "/output"
 queryNo = 0
 
 

@@ -40,6 +40,9 @@ def index():
     #     return jsonify(output)
 
     if request.method == "POST":
+        
+        print("Request : ")
+        print(request)
 
         print("INSIDE POST")
         data = json.loads(request.data.decode("utf-8"))

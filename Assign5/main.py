@@ -75,7 +75,7 @@ def select_where_query(queryNo, sel_args = None, where_args = None):
 
 def myFunc(e):
 #   print(e[1])
-  return -float(e[1])
+    return -float(e[1])
 
 def stats_page1(queryNo):
 

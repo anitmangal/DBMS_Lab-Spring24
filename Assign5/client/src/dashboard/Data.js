@@ -9,3 +9,23 @@ export const columns = [
     'tolls_amount', 'improvement_surcharge', 
     'total_amount', 'congestion_surcharge', 
     'airport_fee'];
+
+export const mapping = {'VendorID': 'Vendor ID',
+                        'tpep_pickup_datetime': 'Pickup Date-Time',
+                        'tpep_dropoff_datetime': 'Dropoff Date-Time',
+                        'passenger_count': 'Passenger Count',
+                        'trip_distance': 'Trip Distance',
+                        'RatecodeID': 'RatecodeID',
+                        'store_and_fwd_flag': 'Store and Forward Flag',
+                        'PULocationID': 'Pickup LocationID',
+                        'DOLocationID': 'Dropoff LocationID',
+                        'payment_type': 'Payment Type',
+                        'fare_amount': 'Fare Amount',
+                        'extra': 'Extra',
+                        'mta_tax': 'MTA Tax',
+                        'tip_amount': 'Tip Amount',
+                        'tolls_amount': 'Tolls Amount',
+                        'improvement_surcharge': 'Improvement Surcharge',
+                        'total_amount': 'Total Amount',
+                        'congestion_surcharge': 'Congestion Surcharge',
+                        'airport_fee': 'Airport Fee'};

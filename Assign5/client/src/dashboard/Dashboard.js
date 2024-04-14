@@ -8,7 +8,7 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { columns } from './Data';
+import { columns, mapping } from './Data';
 import Title from './Title';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
@@ -30,7 +30,7 @@ const Dashboard = () => {
 
   const handleSearch = () => {
     const data = { cols, queries };
-    console.log(data);
+    console.log(data); 
 
     // const myData = [
     //   { "VendorID": 1, "extra": 2, "mta_tax": 3 },
@@ -88,7 +88,7 @@ const Dashboard = () => {
                 {allCols.map(col =>
                   <Chip
                     sx={{ color: cols.includes(col) ? "white" : "black", backgroundColor: cols.includes(col) ? "primary.main" : "grey.300", mr: 2, mb: 2 }}
-                    label={col}
+                    label={mapping[col]}
                     key={col}
                     onClick={() => setCols(cols => cols.includes(col) ? cols.filter(c => c !== col) : [...cols, col])}
                   />

@@ -1,31 +1,58 @@
 ### Roman's Taxi Service
 
-Install the necessary packages as specified in 'requirements.txt'
+#### Installation
 
-For the server (let hadoop be the user that is going to develop the DFS) :
+1. Install the necessary packages as specified in `requirements.txt`:
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-Use 'https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html' for hadoop installation
+2. Follow the [Hadoop installation guide](https://medium.com/@abhikdey06/apache-hadoop-3-3-6-installation-on-ubuntu-22-04-14516bceec85).
 
-1) Use `su - hadoop` and login to that user
-2) Go the directory containing the Roman's Taxi Service directory using `cd`
-3) Download the dataset from 'https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page' and store it in the directory `taxi` inside the root directory
-4) Use `python pqtocsv_dataset_concat.py` to generate the required dataset
-5) To load the dataset into HDFS use the following set of commands
-   1) `hdfs dfs -mkdir /user`
-   2) `hdfs dfs -mkdir /user/hadoop`
-   3) `hdfs dfs -mkdir /user/hadoop/data`
-   4) `hdfs dfs -copyFromLocal <path-to-directory></path-to-directory>/taxi/yellow_tripdata_2023_feb_to_dec_2024_jan_10percent.csv /user/hadoop/data`
-   5) `start-all.sh`
-6) Start running the server using `python app.py`
+3. Switch to the Hadoop user and navigate to the directory containing the Roman's Taxi Service directory:
+    ```bash
+    su - hadoop
+    cd /path/to/RomansTaxiService
+    ```
 
+4. Download the dataset from [NYC Taxi TLC Trip Record Data](https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page) and store it in the `taxi` directory inside the Roman's Taxi Service directory.
 
-For the client :
+5. Generate the required dataset using the Python script:
+    ```bash
+    python pqtocsv_dataset_concat.py
+    ```
 
-1) Go to the directory containing the Roman's Taxi Service directory and use `cd client`
-2) First do `npm install` and finally `npm start` to access the provided services
+6. Load the dataset into HDFS using the following commands:
+    ```bash
+    hdfs dfs -mkdir /user
+    hdfs dfs -mkdir /user/hadoop
+    hdfs dfs -mkdir /user/hadoop/data
+    hdfs dfs -copyFromLocal /path/to/directory/taxi/yellow_tripdata_2023_feb_to_dec_2024_jan_10percent.csv /user/hadoop/data
+    start-all.sh
+    ```
 
+7. Start running the server using:
+    ```bash
+    python app.py
+    ```
 
+#### Client Setup
 
+1. Navigate to the client directory:
+    ```bash
+    cd /path/to/RomansTaxiService/client
+    ```
 
+2. Install required dependencies:
+    ```bash
+    npm install
+    ```
 
+3. Start the client to access the provided services:
+    ```bash
+    npm start
+    ```
 
+---
+
+This `README.md` provides step-by-step instructions for setting up and running Roman's Taxi Service on both the server and client sides. It includes commands for installing packages, setting up Hadoop, downloading datasets, running the server, and starting the client application. Adjust paths and commands as per your specific setup.

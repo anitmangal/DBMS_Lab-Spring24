@@ -1,4 +1,5 @@
 *.txt
+!requirements.txt
 *.parquet
 *.csv
 node_modules

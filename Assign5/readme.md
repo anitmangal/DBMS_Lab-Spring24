@@ -31,9 +31,24 @@
     start-all.sh
     ```
 
-7. Start running the server using:
+7. SSH into the localhost:
+    ```bash
+    ssh localhost
+    ```
+
+8. Switch to the Hadoop user:
+    ```bash
+    su - hadoop
+    ```
+
+9. Start running the server using:
     ```bash
     python app.py
+    ```
+
+10. Once done using the server, stop Hadoop services:
+    ```bash
+    stop-all.sh
     ```
 
 #### Client Setup
@@ -43,7 +58,7 @@
     cd /path/to/RomansTaxiService/client
     ```
 
-2. Install required dependencies:
+2. Install required dependencies: 
     ```bash
     npm install
     ```

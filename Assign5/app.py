@@ -46,6 +46,8 @@ def index():
 
         print("INSIDE POST")
         data = json.loads(request.data.decode("utf-8"))
+        print("DATA : ")
+        print(data)
         cols = data['cols']
         select_columns = " ".join(data['cols'])
         query = "?".join(":".join([str(value) for key,value in x.items()]) for x in data['queries'])

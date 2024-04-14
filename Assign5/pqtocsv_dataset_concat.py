@@ -35,7 +35,7 @@ if os.path.exists(file_path):
 else:
     print(f"File {file_name} not found.")
     
-print(f"Concatenating data for month {month}")
+print(f"Concatenating data for month 01")
     
 output_file = './taxi/yellow_tripdata_2023_feb_to_dec_2024_jan_10percent.csv'
 concatenated_data.to_csv(output_file, index=False)

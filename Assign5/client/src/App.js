@@ -90,9 +90,12 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 const mdTheme = createTheme({
-  // palette: {
-  //   mode: 'dark',
-  // },
+  palette: {
+    primary: {
+      main: '#ffff00',
+    },
+    mode: 'dark',
+  },
 });
 
 function DashboardContent() {
@@ -127,11 +130,11 @@ function DashboardContent() {
             <Typography
               component="h1"
               variant="h6"
-              color="inherit"
+              color="#ffff00"
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              LimousineWala
+              Roman's Taxi Service
             </Typography>
             {/* <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
@@ -165,7 +168,7 @@ function DashboardContent() {
               <ListItemIcon>
                 <ShoppingCartIcon />
               </ListItemIcon>
-              <ListItemText primary="Orders" />
+              <ListItemText primary="Statistics" />
             </ListItemButton>
             {/* <Divider sx={{ my: 1 }} /> */}
           </List>

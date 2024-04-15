@@ -84,7 +84,7 @@ def stats():
         processes.append ( executor.submit(stats_page2, 2) )
         processes.append ( executor.submit(stats_page3, 3) )
         processes.append ( executor.submit(stats_page4, 4) )
-        processes.append ( executor.submit(stats_page5, 5) )
+        # processes.append ( executor.submit(stats_page5, 5) )
         processes.append ( executor.submit(stats_page6, 6) )
         processes.append ( executor.submit(stats_page7, 7) )
 

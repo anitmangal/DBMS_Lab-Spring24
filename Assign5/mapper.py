@@ -31,7 +31,7 @@ def map_select_where(args):
         if len(l) == 0:
             continue
 
-        line = l.strip(" ").split(",")
+        line = (l.strip(" ")).split(",")
         take = True
 
         for arg in args:
@@ -88,7 +88,7 @@ elif (sys.argv[1] == "2"):  # popular dropoff location
         print(f"{dropoff}\t{1}")
 
 elif (sys.argv[1] == "3"):  # busiest hour
-    for line in sys.stdin:
+    for line in sys.stdin: # 2023-02-13 17:11:02
         fields = line.strip().split(',')
         pickup_datetime = fields[1]
         pickup_hour = pickup_datetime.split(':')[0][-2:]
@@ -108,7 +108,7 @@ elif (sys.argv[1] == "5"):  # revenue vs day
     for line in sys.stdin:
         fields = line.strip().split(',')
         pickup_datetime = fields[1]
-        pickup_day = pickup_datetime.split()[0]
+        pickup_day = pickup_datetime.split('/')[0]
         if fields[16] == "total_amount":
             continue
         revenue = float(fields[16])
@@ -118,7 +118,7 @@ elif (sys.argv[1] == "6"):  # busiest day
     for line in sys.stdin:
         fields = line.strip().split(',')
         pickup_datetime = fields[1]
-        pickup_day = pickup_datetime.split()[0]
+        pickup_day = pickup_datetime.split('/')[0]
         print(f"{pickup_day}\t1")
 
 elif (sys.argv[1] == "7"):  # total trips vs month

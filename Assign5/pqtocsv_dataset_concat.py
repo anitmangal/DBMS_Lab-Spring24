@@ -55,6 +55,12 @@ else:
 print(f"Concatenating data for month 01")
     
 output_file = './taxi/yellow_tripdata_2023_feb_to_dec_2024_jan_10percent.csv'
+
+concatenated_data['tpep_pickup_datetime'] = concatenated_data['tpep_pickup_datetime'].str.replace(' ', '/')
+concatenated_data['tpep_dropoff_datetime'] = concatenated_data['tpep_dropoff_datetime'].str.replace(' ', '/')
+
+print(concatenated_data.head(5))
+
 concatenated_data.to_csv(output_file, index=False)
 
 for column_name in concatenated_data.columns:

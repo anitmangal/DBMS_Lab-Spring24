@@ -23,7 +23,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 // import ListSubheader from '@mui/material/ListSubheader';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import AnalyticsIcon from '@mui/icons-material/Analytics';
 import {Routes,Route } from 'react-router-dom';
 import Loader from './components/Loader';
 import {lazy,Suspense} from 'react';
@@ -166,7 +166,7 @@ function DashboardContent() {
             </ListItemButton>
             <ListItemButton onClick={() => navigate('/stats')}>
               <ListItemIcon>
-                <ShoppingCartIcon />
+                <AnalyticsIcon />
               </ListItemIcon>
               <ListItemText primary="Statistics" />
             </ListItemButton>

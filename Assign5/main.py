@@ -2,7 +2,7 @@ import os
 import time
 # SELECT VendorID, tpep_pickup_datetime, RatecodeID FROM table WHERE RatecodeID > 100 AND fare_amount < 10;
 
-inputDir = "data/yellow_tripdata_2024-01.csv"
+inputDir = "data/yellow_tripdata_2023_feb_to_dec_2024_jan_10percent.csv"
 outputFolder = "/output"
 queryNo = 0
 
@@ -75,7 +75,7 @@ def select_where_query(queryNo, sel_args = None, where_args = None):
 
 def myFunc(e):
 #   print(e[1])
-  return -float(e[1])
+    return -float(e[1])
 
 def stats_page1(queryNo):
 

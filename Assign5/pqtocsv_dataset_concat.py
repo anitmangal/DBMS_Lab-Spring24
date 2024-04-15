@@ -57,4 +57,7 @@ print(f"Concatenating data for month 01")
 output_file = './taxi/yellow_tripdata_2023_feb_to_dec_2024_jan_10percent.csv'
 concatenated_data.to_csv(output_file, index=False)
 
+for column_name in concatenated_data.columns:
+    print(column_name)
+    
 print(f'Concatenated data (10% sampled) saved to {output_file}')
